@@ -14,12 +14,34 @@ const links = [
 
 const scrolled = ref(false);
 const open = ref(false);
+const active = ref("oversikt");
+
+const ids = links.map((l) => l.href.slice(1));
+let observer: IntersectionObserver | undefined;
 
 function onScroll() {
   scrolled.value = window.scrollY > 20;
 }
-onMounted(() => window.addEventListener("scroll", onScroll, { passive: true }));
-onUnmounted(() => window.removeEventListener("scroll", onScroll));
+onMounted(() => {
+  window.addEventListener("scroll", onScroll, { passive: true });
+  observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) active.value = visible.target.id;
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
+  );
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) observer!.observe(el);
+  });
+});
+onUnmounted(() => {
+  window.removeEventListener("scroll", onScroll);
+  observer?.disconnect();
+});
 
 function go() {
   open.value = false;
@@ -55,12 +77,16 @@ function go() {
           v-for="l in links"
           :key="l.href"
           :href="l.href"
-          class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary"
-          :class="
-            scrolled
-              ? 'text-foreground/80 hover:text-foreground'
-              : 'text-white/85 hover:bg-white/10 hover:text-white'
-          "
+          class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
+          :class="[
+            active === l.href.slice(1)
+              ? scrolled
+                ? 'bg-secondary text-foreground'
+                : 'bg-white/15 text-white'
+              : scrolled
+                ? 'text-foreground/80 hover:bg-secondary hover:text-foreground'
+                : 'text-white/85 hover:bg-white/10 hover:text-white',
+          ]"
         >
           {{ l.label }}
         </a>
@@ -96,7 +122,12 @@ function go() {
             v-for="l in links"
             :key="l.href"
             :href="l.href"
-            class="rounded-md px-3 py-2.5 text-sm font-medium text-foreground/90 hover:bg-secondary"
+            class="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-secondary"
+            :class="
+              active === l.href.slice(1)
+                ? 'bg-secondary text-foreground'
+                : 'text-foreground/90'
+            "
             @click="go"
           >
             {{ l.label }}

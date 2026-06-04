@@ -8,11 +8,18 @@ import {
   Star,
   Users,
   Info,
+  MapPin,
 } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SectionHeading from "@/components/SectionHeading.vue";
 import { schedule } from "@/data/trip";
+
+function mapsUrl(course: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    course + " golf Spain",
+  )}`;
+}
 </script>
 
 <template>
@@ -101,6 +108,16 @@ import { schedule } from "@/data/trip";
                       <Trophy v-if="r.isLiv || r.tournament" class="h-4 w-4" :class="r.isLiv ? 'text-accent' : 'text-primary'" />
                       <Flag v-else class="h-4 w-4 text-primary" />
                       <span class="font-semibold">{{ r.course }}</span>
+                      <a
+                        :href="mapsUrl(r.course)"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        :aria-label="`Vis ${r.course} i kart`"
+                        title="Vis i Google Maps"
+                        class="text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        <MapPin class="h-3.5 w-3.5" />
+                      </a>
                     </div>
                     <div class="flex shrink-0 items-center gap-1.5">
                       <Badge v-if="r.limited" variant="outline" class="gap-1">
