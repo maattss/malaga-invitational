@@ -93,11 +93,11 @@ export const schedule: TripDay[] = [
     title: 'Turneringsrunde 1 – Torrequebrada',
     rounds: [
       {
-        course: 'Mijas Golf – Range',
+        course: 'La Cala Resort – Range',
         label: 'Range & oppvarming (frivillig)',
         times: ['11:00'],
-        driveTime: '~5 min',
-        note: 'Frivillig økt på driving range rett ved huset – for de som trenger litt data på launch monitoren før det gjelder (og resten som bare vil unngå å åpne med en duff på hull 1). 🎯',
+        driveTime: '~15 min',
+        note: 'Frivillig økt på driving range hvis man har lyst og rekker. For de som trenger litt data på launch monitoren før det gjelder eller ikke tør å møte opp på første tee uten. 🎯',
       },
       {
         course: 'Torrequebrada Golf Club',
