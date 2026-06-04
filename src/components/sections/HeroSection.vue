@@ -43,7 +43,8 @@ const facts = [
 <template>
   <section
     id="oversikt"
-    class="hero-gradient relative flex min-h-[100svh] items-center overflow-hidden pt-16"
+    class="hero-gradient relative flex min-h-[100svh] items-center overflow-hidden"
+    style="margin-top: calc(-1 * env(safe-area-inset-top)); padding-top: calc(4rem + env(safe-area-inset-top))"
   >
     <div
       class="fairway-texture pointer-events-none absolute inset-0 opacity-30"

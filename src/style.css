@@ -31,12 +31,15 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
+    /* Fills the iOS safe-area / notch behind the green hero + footer */
+    background-color: hsl(154 53% 16%);
   }
 
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 }
 

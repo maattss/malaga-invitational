@@ -52,6 +52,7 @@ function go() {
 <template>
   <header
     class="fixed inset-x-0 top-0 z-40 transition-all duration-300"
+    style="padding-top: env(safe-area-inset-top)"
     :class="
       scrolled
         ? 'border-b border-border bg-background/85 backdrop-blur-lg'

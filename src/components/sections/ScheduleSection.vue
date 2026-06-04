@@ -69,9 +69,9 @@ function mapsUrl(course: string) {
               <span class="text-xs text-muted-foreground">juni</span>
             </div>
 
-            <CardContent class="flex-1 p-5">
+            <CardContent class="min-w-0 flex-1 p-5">
               <div class="flex items-start justify-between gap-3">
-                <div>
+                <div class="min-w-0">
                   <p
                     class="text-xs font-medium uppercase tracking-wide text-muted-foreground"
                   >
@@ -103,18 +103,18 @@ function mapsUrl(course: string) {
                   class="rounded-xl border border-border p-3.5"
                   :class="r.isLiv ? 'border-accent/50 bg-accent/10' : r.tournament ? 'border-primary/40 bg-primary/5' : 'bg-card'"
                 >
-                  <div class="flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                      <Trophy v-if="r.isLiv || r.tournament" class="h-4 w-4" :class="r.isLiv ? 'text-accent' : 'text-primary'" />
-                      <Flag v-else class="h-4 w-4 text-primary" />
-                      <span class="font-semibold">{{ r.course }}</span>
+                  <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+                    <div class="flex min-w-0 items-center gap-2">
+                      <Trophy v-if="r.isLiv || r.tournament" class="h-4 w-4 shrink-0" :class="r.isLiv ? 'text-accent' : 'text-primary'" />
+                      <Flag v-else class="h-4 w-4 shrink-0 text-primary" />
+                      <span class="min-w-0 font-semibold">{{ r.course }}</span>
                       <a
                         :href="mapsUrl(r.course)"
                         target="_blank"
                         rel="noopener noreferrer"
                         :aria-label="`Vis ${r.course} i kart`"
                         title="Vis i Google Maps"
-                        class="text-muted-foreground transition-colors hover:text-primary"
+                        class="shrink-0 text-muted-foreground transition-colors hover:text-primary"
                       >
                         <MapPin class="h-3.5 w-3.5" />
                       </a>
