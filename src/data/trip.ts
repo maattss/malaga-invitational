@@ -5,6 +5,7 @@ export interface TeeTime {
   note?: string
   departure?: string
   isLiv?: boolean
+  limited?: boolean
 }
 
 export interface TripDay {
@@ -38,8 +39,8 @@ export const flights = {
     label: 'Hjemreise – gruppe 1 (4 stk)',
     route: 'Málaga (AGP) → Stavanger (SVG)',
     date: 'Tirsdag 9. juni 2026',
-    time: 'Ettermiddag',
-    note: '4 av gjengen reiser hjem på tirsdag.',
+    time: '16:50',
+    note: '4 av gjengen reiser hjem på tirsdag med 16:50-flyet.',
   },
   homeLate: {
     label: 'Hjemreise – gruppe 2 (8 stk)',
@@ -56,7 +57,6 @@ export const accommodation = {
   checkIn: 'Torsdag 4. juni (sen kveld etter landing)',
   checkOut: 'Torsdag 11. juni',
   notes: [
-    'Hele gjengen bor samlet – perfekt base mellom rundene.',
     'Adresse og innsjekk-detaljer finner du i Airbnb-appen.',
     'Leiebil(er) anbefales – banene ligger spredt langs kysten.',
   ],
@@ -83,7 +83,7 @@ export const schedule: TripDay[] = [
         course: 'Santana Golf',
         label: 'Runde 2 (offisiell start)',
         times: ['15:00'],
-        departure: '13:50',
+        departure: '13:20',
         note: 'Rolig oppstart etter ankomst. Lunsj før avreise.',
       },
     ],
@@ -100,7 +100,7 @@ export const schedule: TripDay[] = [
         course: 'La Hacienda Links (Alcaidesa)',
         label: 'Morgenrunde',
         times: ['08:00', '08:12', '08:24'],
-        departure: '06:30',
+        departure: '06:00',
         note: 'Tidlig start – linksbane helt vest mot Sotogrande.',
       },
       {
@@ -123,14 +123,16 @@ export const schedule: TripDay[] = [
         course: 'Los Lagos (La Cala Resort)',
         label: 'Morgenrunde',
         times: ['10:10', '10:20'],
-        departure: '09:00',
+        departure: '08:30',
+        limited: true,
+        note: 'Frivillig ekstrarunde – kun de 8 mest ivrige spiller.',
       },
       {
         course: 'Torrequebrada',
         label: 'Ettermiddagsrunde',
         times: ['16:30'],
-        departure: '15:15',
-        note: 'Dobbel golfdag – ta med nok mat og drikke.',
+        departure: '14:45',
+        note: 'Dobbel golfdag for de ivrigste – ta med nok mat og drikke.',
       },
     ],
   },
@@ -145,7 +147,7 @@ export const schedule: TripDay[] = [
         course: 'Rio Real (Marbella)',
         label: 'Morgenrunde',
         times: ['08:30', '08:40', '08:50'],
-        departure: '07:25',
+        departure: '06:55',
       },
       {
         course: 'Rio Real (Marbella)',
@@ -167,13 +169,13 @@ export const schedule: TripDay[] = [
         course: 'Torrequebrada',
         label: 'Morgenrunde',
         times: ['08:00', '08:12', '08:24'],
-        departure: '06:45',
+        departure: '06:15',
       },
       {
         course: 'Santana Golf',
         label: 'Ettermiddagsrunde',
         times: ['14:10', '14:20'],
-        departure: '13:00',
+        departure: '12:30',
         note: '4 av gjengen reiser hjem i dag.',
       },
     ],
@@ -189,7 +191,7 @@ export const schedule: TripDay[] = [
         course: 'Los Naranjos (Nueva Andalucía)',
         label: 'Morgenrunde',
         times: ['09:00', '09:10'],
-        departure: '07:55',
+        departure: '07:25',
       },
       {
         course: 'Los Naranjos (Nueva Andalucía)',
@@ -211,7 +213,7 @@ export const schedule: TripDay[] = [
         course: 'Santana Golf',
         label: 'Avslutningsrunde',
         times: ['08:00', '08:10'],
-        departure: '06:45',
+        departure: '06:15',
         note: 'Rekk flyet – pakk kvelden før og lever leiebil etter runden.',
       },
     ],
@@ -225,16 +227,29 @@ export const liv = {
   ourDay: 'Lørdag 6. juni (runde 2)',
   purse: '20 mill. USD',
   format: '54 hull · shotgun-start · 54 spillere, 12 lag · ingen cut',
+  ticket: {
+    type: 'Ground Pass Plus',
+    summary: 'Vi har kjøpt Ground Pass Plus-billetter til gjengen.',
+    includes: [
+      'Full tilgang til hele banen og fan-områdene gjennom hele dagen.',
+      'Tilgang til Ground Pass Plus-loungen med skjermet sitteareal og skygge.',
+      'Egne bar- og serveringsområder (mat og drikke kjøpes i tillegg).',
+      'Tilgang til scene-/konsertområdet etter siste putt.',
+    ],
+  },
   facts: [
     'En av verdens mest ikoniske baner – vertskap for Ryder Cup 1997.',
     'Spanske stjerner i feltet: Jon Rahm, Sergio García og David Puig.',
     'Shotgun-start betyr at alle lagene starter samtidig – mye action overalt.',
-    'Ta med solkrem, vann og lett tursko. Det blir mye gåing i kupert terreng.',
+    'Lørdag er finaledagen (runde 3) – avgjørelsen både individuelt og for lagene.',
+    'Konsert/show på området etter spillet – sjekk dagens artist i LIV-appen.',
   ],
   tips: [
+    'Ha billetter/QR-koder klare i LIV Golf-appen før dere drar fra Hacienda.',
     'Kom tidlig for parkering – følg shuttle-anvisninger fra arrangøren.',
-    'Sjekk billetter/akkreditering i appen før dere drar fra Hacienda.',
+    'Bruk Ground Pass Plus-loungen som base og møtepunkt utover dagen.',
     'Følg en gruppe noen hull, og finn et godt punkt ved 18. green til finishen.',
+    'Ta med solkrem, vann og lett tursko – mye gåing i kupert terreng.',
   ],
 }
 
@@ -261,17 +276,22 @@ export const tournament = {
   ],
 }
 
-export const players: string[] = [
-  'Joakim Solstrand',
-  'Sander Bjørnå',
-  'Torbjørn',
-  'Jørgen',
-  'Victor',
-  'Mats',
-  'Andreas',
-  'Håkon',
-  'Anders',
-  'Joa',
-  'Mikka',
-  'Pål',
+export interface Player {
+  name: string
+  hcp: number
+}
+
+export const players: Player[] = [
+  { name: 'Victor Gabrielsen', hcp: 3.0 },
+  { name: 'Joachim Boxill Knutsen', hcp: 7.7 },
+  { name: 'Torbjørn Berge', hcp: 11.2 },
+  { name: 'Joakim Solstrand', hcp: 11.4 },
+  { name: 'Andreas Boxill Knutsen', hcp: 12.0 },
+  { name: 'Sander Bjørnaa', hcp: 13.0 },
+  { name: 'Anders Fjelde', hcp: 16.3 },
+  { name: 'Paal Lilleås', hcp: 18.0 },
+  { name: 'Michael Boxill', hcp: 19.0 },
+  { name: 'Håkon Høiland', hcp: 22.5 },
+  { name: 'Mats Tyldum', hcp: 23.3 },
+  { name: 'Jørgen Håstø Borgenvik', hcp: 26.0 },
 ]

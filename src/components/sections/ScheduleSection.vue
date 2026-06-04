@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { Clock, Car, Flag, Trophy, PlaneTakeoff, Star } from "lucide-vue-next";
+import {
+  Clock,
+  Car,
+  Flag,
+  Trophy,
+  PlaneTakeoff,
+  Star,
+  Users,
+} from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SectionHeading from "@/components/SectionHeading.vue";
@@ -12,7 +20,7 @@ import { schedule } from "@/data/trip";
       <SectionHeading
         eyebrow="Golf"
         title="Dag-for-dag program"
-        description="Tee-tider og anbefalt avreisetid for hver bane. Avreisetid er et estimat – juster ved behov."
+        description="Tee-tider og anbefalt avreisetid for hver bane. Avreisetidene inkluderer 30 min buffer før første tee – juster ved behov."
       />
 
       <div class="mx-auto max-w-3xl space-y-5">
@@ -79,9 +87,14 @@ import { schedule } from "@/data/trip";
                       <Flag v-else class="h-4 w-4 text-primary" />
                       <span class="font-semibold">{{ r.course }}</span>
                     </div>
-                    <Badge :variant="r.isLiv ? 'accent' : 'secondary'">{{
-                      r.label
-                    }}</Badge>
+                    <div class="flex shrink-0 items-center gap-1.5">
+                      <Badge v-if="r.limited" variant="outline" class="gap-1">
+                        <Users class="h-3 w-3" /> Kun 8
+                      </Badge>
+                      <Badge :variant="r.isLiv ? 'accent' : 'secondary'">{{
+                        r.label
+                      }}</Badge>
+                    </div>
                   </div>
 
                   <div

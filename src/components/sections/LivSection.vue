@@ -6,6 +6,7 @@ import {
   Banknote,
   Check,
   Lightbulb,
+  Ticket,
 } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -57,6 +58,28 @@ const meta = [
                 </p>
                 <p class="font-semibold leading-tight">{{ m.value }}</p>
               </div>
+            </div>
+
+            <div
+              class="mt-6 rounded-xl border border-accent/40 bg-accent/10 p-5"
+            >
+              <div class="flex items-center gap-2">
+                <Ticket class="h-5 w-5 text-accent" />
+                <h4 class="font-bold">Billetter – {{ liv.ticket.type }}</h4>
+              </div>
+              <p class="mt-1 text-sm text-muted-foreground">
+                {{ liv.ticket.summary }}
+              </p>
+              <ul class="mt-3 grid gap-2 sm:grid-cols-2">
+                <li
+                  v-for="(inc, i) in liv.ticket.includes"
+                  :key="i"
+                  class="flex items-start gap-2 text-sm"
+                >
+                  <Check class="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                  <span>{{ inc }}</span>
+                </li>
+              </ul>
             </div>
 
             <div class="mt-6 grid gap-6 md:grid-cols-2">
