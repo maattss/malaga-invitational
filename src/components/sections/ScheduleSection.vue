@@ -29,9 +29,10 @@ import { schedule } from "@/data/trip";
       >
         <Info class="mt-0.5 h-4 w-4 shrink-0" />
         <p>
-          <strong>Merk:</strong> Alle tee-tider er foreløpige estimater og er
-          <strong>ikke bekreftet</strong> ennå. Selve Málaga Invitational teller kun
-          for de fem turneringsrundene (markert med
+          <strong>Merk:</strong> De fleste tee-tidene er bekreftet. Tidene for
+          <strong>fredag</strong> (Torrequebrada) og <strong>søndag ettermiddag</strong>
+          (Santana) er foreløpige estimater (merket «est.»). Selve Málaga Invitational
+          teller kun for de fem turneringsrundene (markert med
           <Trophy class="inline h-3 w-3 align-[-1px]" /> – fredag, lørdag, søndag og
           begge på mandag). Øvrige runder er sosiale.
         </p>

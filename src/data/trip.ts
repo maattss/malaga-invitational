@@ -12,6 +12,7 @@ export interface TeeTime {
   isLiv?: boolean
   limited?: boolean
   tournament?: boolean
+  estimate?: boolean
   flights?: Flight[]
   flightsNote?: string
 }
@@ -94,13 +95,13 @@ export const schedule: TripDay[] = [
         times: ['15:00'],
         departure: '13:00',
         tournament: true,
+        estimate: true,
         note: 'Eventyret starter her. Rolig oppstart etter ankomst – tonen settes.',
         flights: [
           { name: 'Flight 1', players: ['Solstrand', 'Sander', 'Torbjørn', 'Jørgen'] },
           { name: 'Flight 2', players: ['Victor', 'Mats', 'Andreas', 'Håkon'] },
-          { name: 'Flight 3', players: ['Anders', 'Joachim', 'Michael', 'Pål'] },
+          { name: 'Flight 3', players: ['Fjelde', 'Joa', 'Mikka', 'Pål'] },
         ],
-        flightsNote: 'Spiller 1 i hver flight fører score i Golf Gamebook.',
       },
     ],
   },
@@ -120,11 +121,10 @@ export const schedule: TripDay[] = [
         tournament: true,
         note: 'Tidlig start – linksbane helt vest mot Sotogrande. Nærmest hjemmebane for Håkon.',
         flights: [
-          { name: 'Flight 1', players: ['Joachim', 'Pål', 'Jørgen', 'Andreas'] },
-          { name: 'Flight 2', players: ['Solstrand', 'Victor', 'Torbjørn', 'Anders'] },
-          { name: 'Flight 3', players: ['Mats', 'Håkon', 'Michael', 'Sander'] },
+          { name: 'Flight 1', players: ['Joa', 'Pål', 'Jørgen', 'Andreas'] },
+          { name: 'Flight 2', players: ['Solstrand', 'Victor', 'Torbjørn', 'Fjelde'] },
+          { name: 'Flight 3', players: ['Mats', 'Håkon', 'Mikka', 'Sander'] },
         ],
-        flightsNote: 'Spiller 1 i hver flight fører score i Golf Gamebook.',
       },
       {
         course: 'Real Club Valderrama',
@@ -156,13 +156,13 @@ export const schedule: TripDay[] = [
         times: ['16:30'],
         departure: '14:45',
         tournament: true,
+        estimate: true,
         note: 'Kjente trakter for de fleste – her er det mulig å hente inn det tapte.',
         flights: [
-          { name: 'Flight 1', players: ['Mats', 'Victor', 'Sander', 'Anders'] },
+          { name: 'Flight 1', players: ['Mats', 'Victor', 'Sander', 'Fjelde'] },
           { name: 'Flight 2', players: ['Håkon', 'Andreas', 'Solstrand', 'Pål'] },
-          { name: 'Flight 3', players: ['Michael', 'Jørgen', 'Joachim', 'Torbjørn'] },
+          { name: 'Flight 3', players: ['Mikka', 'Jørgen', 'Joa', 'Torbjørn'] },
         ],
-        flightsNote: 'Spiller 1 i hver flight fører score i Golf Gamebook.',
       },
     ],
   },
@@ -203,6 +203,7 @@ export const schedule: TripDay[] = [
         label: 'Morgenrunde',
         times: ['08:00', '08:12', '08:24'],
         departure: '06:15',
+        note: 'Mulig playoff: står to eller flere likt etter de fem turneringsrundene, avgjøres det med matchplay head-to-head over 18 hull her tirsdag morgen.',
       },
       {
         course: 'Santana Golf',
@@ -295,7 +296,6 @@ export const tournament = {
     { label: 'Format', value: 'Slagspill · 90 hull / 5 runder' },
     { label: 'Baner', value: '4 baner over 4 dager' },
     { label: 'Handicap', value: '75 % av spillehandicap' },
-    { label: 'Scoring', value: 'Golf Gamebook (live leaderboard)' },
   ],
   rules: [
     'OB og vann: 1 straffeslag og slipp ved nærmeste punkt.',
@@ -352,7 +352,7 @@ export const players: Player[] = [
     funFact: 'Bror nummer to i Boxill-trioen – kjemper en evig kamp mot Joachim og Michael om familiens bragging rights.',
   },
   {
-    name: 'Sander Bjørnaa',
+    name: 'Sander Bjørnå',
     hcp: 13.0,
     seed: 'Sander-B',
     funFact: 'Fjorårets vinner og vert for Champions Dinner – tittelforsvarer i Málaga.',
