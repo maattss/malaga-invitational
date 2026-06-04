@@ -51,13 +51,9 @@ function go() {
 
 <template>
   <header
-    class="fixed inset-x-0 top-0 z-40 transition-all duration-300"
+    class="fixed inset-x-0 top-0 z-40 bg-[hsl(154_53%_13%)] transition-shadow duration-300"
     style="padding-top: env(safe-area-inset-top)"
-    :class="
-      scrolled
-        ? 'border-b border-border bg-background/85 backdrop-blur-lg'
-        : 'bg-transparent'
-    "
+    :class="scrolled ? 'border-b border-white/10 shadow-lg shadow-black/20' : ''"
   >
     <div class="container flex h-16 items-center justify-between">
       <a href="#oversikt" class="flex items-center gap-2" @click="go">
@@ -66,10 +62,7 @@ function go() {
         >
           <Flag class="h-5 w-5" />
         </span>
-        <span
-          class="font-extrabold tracking-tight transition-colors"
-          :class="scrolled ? 'text-foreground' : 'text-white'"
-        >
+        <span class="font-extrabold tracking-tight text-white">
           Málaga <span class="text-accent">'26</span>
         </span>
       </a>
@@ -80,27 +73,18 @@ function go() {
           :key="l.href"
           :href="l.href"
           class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
-          :class="[
+          :class="
             active === l.href.slice(1)
-              ? scrolled
-                ? 'bg-secondary text-foreground'
-                : 'bg-white/15 text-white'
-              : scrolled
-                ? 'text-foreground/80 hover:bg-secondary hover:text-foreground'
-                : 'text-white/85 hover:bg-white/10 hover:text-white',
-          ]"
+              ? 'bg-white/15 text-white'
+              : 'text-white/85 hover:bg-white/10 hover:text-white'
+          "
         >
           {{ l.label }}
         </a>
       </nav>
 
       <button
-        class="inline-flex h-10 w-10 items-center justify-center rounded-lg md:hidden"
-        :class="
-          scrolled
-            ? 'text-foreground hover:bg-secondary'
-            : 'text-white hover:bg-white/10'
-        "
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-white hover:bg-white/10 md:hidden"
         :aria-label="open ? 'Lukk meny' : 'Åpne meny'"
         @click="open = !open"
       >
@@ -117,18 +101,18 @@ function go() {
     >
       <nav
         v-if="open"
-        class="border-b border-border bg-background/95 backdrop-blur-lg md:hidden"
+        class="border-t border-white/10 bg-[hsl(154_53%_13%)] md:hidden"
       >
         <div class="container grid gap-1 py-3">
           <a
             v-for="l in links"
             :key="l.href"
             :href="l.href"
-            class="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-secondary"
+            class="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-white/10"
             :class="
               active === l.href.slice(1)
-                ? 'bg-secondary text-foreground'
-                : 'text-foreground/90'
+                ? 'bg-white/15 text-white'
+                : 'text-white/90'
             "
             @click="go"
           >
