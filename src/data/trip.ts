@@ -135,7 +135,6 @@ export const schedule: TripDay[] = [
         course: 'Real Club Valderrama',
         label: 'LIV Golf Andalucía',
         times: ['Ettermiddag'],
-        driveTime: '~55 min',
         isLiv: true,
         note: 'Vi går rett fra Hacienda til LIV Golf på Valderrama. Se eget kort under.',
       },
@@ -205,6 +204,7 @@ export const schedule: TripDay[] = [
     weekday: 'Tirsdag',
     short: 'TIR',
     title: 'Torrequebrada + Santana',
+    travel: 'Hjemreise gruppe 1 (4 stk): Málaga (AGP) → Stavanger (SVG) kl. 16:50. Vær på flyplassen i god tid – lever leiebil og sjekk inn køller.',
     rounds: [
       {
         course: 'Torrequebrada',
