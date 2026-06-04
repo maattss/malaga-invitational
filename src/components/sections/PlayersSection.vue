@@ -1,40 +1,48 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Users, Sparkles, Star } from 'lucide-vue-next'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import SectionHeading from '@/components/SectionHeading.vue'
-import { players } from '@/data/trip'
+import { ref } from "vue";
+import { Users, Sparkles, Star } from "lucide-vue-next";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import SectionHeading from "@/components/SectionHeading.vue";
+import { players } from "@/data/trip";
 
 function initials(name: string) {
   return name
-    .split(' ')
+    .split(" ")
     .map((p) => p[0])
     .slice(0, 2)
-    .join('')
-    .toUpperCase()
+    .join("")
+    .toUpperCase();
 }
 
 function avatar(seed: string) {
   return `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(
     seed,
-  )}&backgroundColor=c0e8d5,b6e3c5,d1f0e0&radius=50`
+  )}&backgroundColor=c0e8d5,b6e3c5,d1f0e0&radius=50`;
 }
 
-const photoModules = import.meta.glob('@/assets/players/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>
+const photoModules = import.meta.glob(
+  "@/assets/players/*.{jpg,jpeg,png,webp}",
+  {
+    eager: true,
+    import: "default",
+  },
+) as Record<string, string>;
 
 function photo(seed: string): string | undefined {
-  const entry = Object.entries(photoModules).find(([path]) =>
-    path.split('/').pop()?.replace(/\.[^.]+$/, '') === seed,
-  )
-  return entry?.[1]
+  const entry = Object.entries(photoModules).find(
+    ([path]) =>
+      path
+        .split("/")
+        .pop()
+        ?.replace(/\.[^.]+$/, "") === seed,
+  );
+  return entry?.[1];
 }
 
-const photoFailed = ref<Record<string, boolean>>({})
-const avatarFailed = ref<Record<string, boolean>>({})
+const photoFailed = ref<Record<string, boolean>>({});
+const avatarFailed = ref<Record<string, boolean>>({});
+const imgLoaded = ref<Record<string, boolean>>({});
 </script>
 
 <template>
@@ -46,11 +54,14 @@ const avatarFailed = ref<Record<string, boolean>>({})
         description="12 spillere kjemper om heder, ære og vandretrofeet – sortert etter handicap."
       />
 
-      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+      >
         <Card
-          v-for="p in players"
+          v-for="(p, i) in players"
           :key="p.name"
-          class="overflow-hidden transition-shadow hover:shadow-md"
+          v-reveal="(i % 3) * 70"
+          class="overflow-hidden transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
         >
           <CardContent class="p-5">
             <div class="flex items-center gap-3">
@@ -59,7 +70,9 @@ const avatarFailed = ref<Record<string, boolean>>({})
                 :src="photo(p.seed)"
                 :alt="p.name"
                 loading="lazy"
-                class="h-14 w-14 shrink-0 rounded-full border border-border bg-secondary object-cover"
+                class="img-fade h-14 w-14 shrink-0 rounded-full border border-border bg-secondary object-cover"
+                :class="{ 'img-fade-in': imgLoaded[p.seed] }"
+                @load="imgLoaded[p.seed] = true"
                 @error="photoFailed[p.seed] = true"
               />
               <img
@@ -67,7 +80,9 @@ const avatarFailed = ref<Record<string, boolean>>({})
                 :src="avatar(p.seed)"
                 :alt="p.name"
                 loading="lazy"
-                class="h-14 w-14 shrink-0 rounded-full border border-border bg-secondary object-cover"
+                class="img-fade h-14 w-14 shrink-0 rounded-full border border-border bg-secondary object-cover"
+                :class="{ 'img-fade-in': imgLoaded[p.seed] }"
+                @load="imgLoaded[p.seed] = true"
                 @error="avatarFailed[p.seed] = true"
               />
               <span
@@ -79,7 +94,10 @@ const avatarFailed = ref<Record<string, boolean>>({})
 
               <div class="min-w-0 flex-1">
                 <p class="truncate font-semibold leading-tight">{{ p.name }}</p>
-                <p v-if="p.leader" class="flex items-center gap-1 text-xs font-medium text-accent">
+                <p
+                  v-if="p.leader"
+                  class="flex items-center gap-1 text-xs font-medium text-accent-strong"
+                >
                   <Star class="h-3 w-3 fill-current" />
                   Reiseleder
                 </p>
@@ -104,7 +122,8 @@ const avatarFailed = ref<Record<string, boolean>>({})
         class="mx-auto mt-6 flex max-w-4xl items-center justify-center gap-2 text-center text-sm text-muted-foreground"
       >
         <Users class="h-4 w-4" />
-        Spilles med 75 % av handicap. Startlister og puljer settes i Golf Gamebook før hver runde.
+        Spilles med 75 % av handicap. Startlister og puljer settes i Golf
+        Gamebook før hver runde.
       </p>
     </div>
   </section>

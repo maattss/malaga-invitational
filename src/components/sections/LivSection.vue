@@ -32,7 +32,7 @@ const meta = [
       />
 
       <div class="mx-auto max-w-4xl">
-        <Card class="overflow-hidden">
+        <Card class="overflow-hidden" v-reveal>
           <div class="hero-gradient relative p-8 text-white">
             <div
               class="fairway-texture pointer-events-none absolute inset-0 opacity-30"
@@ -85,7 +85,7 @@ const meta = [
                 :href="liv.website"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
+                class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-strong hover:underline"
               >
                 Mer info på livgolf.com
                 <ExternalLink class="h-3.5 w-3.5" />

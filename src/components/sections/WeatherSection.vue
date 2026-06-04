@@ -120,7 +120,10 @@ onMounted(load);
         description="Live varsel for Costa del Sol (Mijas) gjennom uka."
       />
 
-      <div v-if="loading" class="flex items-center justify-center py-10 text-muted-foreground">
+      <div
+        v-if="loading"
+        class="flex items-center justify-center py-10 text-muted-foreground"
+      >
         <Loader2 class="h-5 w-5 animate-spin" />
         <span class="ml-2 text-sm">Henter værmelding …</span>
       </div>
@@ -130,8 +133,8 @@ onMounted(load);
         class="mx-auto max-w-md rounded-xl border border-border bg-card p-6 text-center"
       >
         <p class="text-sm text-muted-foreground">
-          Fikk ikke hentet værmeldingen akkurat nå. Sjekk yr.no eller Met-appen for
-          oppdatert varsel.
+          Fikk ikke hentet værmeldingen akkurat nå. Sjekk yr.no eller Met-appen
+          for oppdatert varsel.
         </p>
         <button
           type="button"
@@ -147,19 +150,24 @@ onMounted(load);
         class="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8"
       >
         <Card
-          v-for="d in days"
+          v-for="(d, i) in days"
           :key="d.date"
-          class="transition-shadow hover:shadow-md"
+          v-reveal="i * 60"
+          class="transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
         >
           <CardContent class="flex flex-col items-center p-3 text-center">
-            <p class="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+            <p
+              class="text-xs font-bold uppercase tracking-wide text-muted-foreground"
+            >
               {{ d.weekday }} {{ d.day }}
             </p>
             <component :is="d.icon" class="my-2 h-8 w-8 text-accent" />
             <p class="text-lg font-extrabold leading-none tabular-nums">
               {{ d.max }}°
             </p>
-            <p class="text-xs text-muted-foreground tabular-nums">{{ d.min }}°</p>
+            <p class="text-xs text-muted-foreground tabular-nums">
+              {{ d.min }}°
+            </p>
             <p
               class="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground tabular-nums"
             >
@@ -171,7 +179,8 @@ onMounted(load);
 
       <p class="mt-4 text-center text-xs text-muted-foreground">
         Kilde: open-meteo.com · oppdateres automatisk<template v-if="updatedAt">
-          · sist oppdatert {{ updatedAt }} (lokal tid Spania)</template>
+          · sist oppdatert {{ updatedAt }} (lokal tid Spania)</template
+        >
       </p>
     </div>
   </section>

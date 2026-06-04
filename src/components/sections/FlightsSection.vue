@@ -24,7 +24,8 @@ const items = [
         <Card
           v-for="(f, i) in items"
           :key="i"
-          class="overflow-hidden transition-shadow hover:shadow-md"
+          v-reveal="i * 80"
+          class="overflow-hidden transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
         >
           <CardContent class="p-6">
             <div class="flex items-center justify-between">

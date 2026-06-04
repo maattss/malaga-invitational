@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { LogIn, LogOut, ExternalLink, Check, MapPin } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading.vue";
 import { accommodation } from "@/data/trip";
+
+const heroLoaded = ref(false);
 </script>
 
 <template>
@@ -15,20 +18,26 @@ import { accommodation } from "@/data/trip";
         description="Hele gjengen bor samlet i felles villa på Costa del Sol."
       />
 
-      <Card class="mx-auto max-w-3xl overflow-hidden">
+      <Card class="mx-auto max-w-3xl overflow-hidden" v-reveal>
         <div class="relative">
           <img
             :src="accommodation.image"
             :alt="accommodation.name"
-            class="h-56 w-full object-cover sm:h-72"
+            class="img-fade h-56 w-full object-cover sm:h-72"
+            :class="{ 'img-fade-in': heroLoaded }"
             loading="lazy"
+            @load="heroLoaded = true"
           />
           <div
             class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
           />
-          <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
+          <div
+            class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6"
+          >
             <div class="min-w-0 text-white">
-              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-white/80">
+              <span
+                class="inline-flex items-center gap-1.5 text-xs font-medium text-white/80"
+              >
                 <MapPin class="h-3.5 w-3.5" />
                 {{ accommodation.location }}
               </span>

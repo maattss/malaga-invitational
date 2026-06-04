@@ -16,7 +16,12 @@ import { tournament } from "@/data/trip";
 
       <div class="mx-auto max-w-4xl">
         <div class="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Card v-for="f in tournament.format" :key="f.label">
+          <Card
+            v-for="(f, i) in tournament.format"
+            :key="f.label"
+            v-reveal="i * 70"
+            class="transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
+          >
             <CardContent class="p-4 text-center">
               <p class="text-xs uppercase tracking-wide text-muted-foreground">
                 {{ f.label }}
@@ -27,7 +32,7 @@ import { tournament } from "@/data/trip";
         </div>
 
         <div class="grid gap-5 md:grid-cols-2">
-          <Card>
+          <Card v-reveal>
             <CardContent class="p-6">
               <div class="flex items-center gap-2">
                 <ListChecks class="h-5 w-5 text-primary" />
@@ -50,7 +55,7 @@ import { tournament } from "@/data/trip";
             </CardContent>
           </Card>
 
-          <Card class="overflow-hidden">
+          <Card class="overflow-hidden" v-reveal="80">
             <div class="hero-gradient relative px-6 py-5 text-white">
               <div
                 class="fairway-texture pointer-events-none absolute inset-0 opacity-30"

@@ -37,19 +37,21 @@ function mapsUrl(course: string) {
         <Info class="mt-0.5 h-4 w-4 shrink-0" />
         <p>
           <strong>Merk:</strong> De fleste tee-tidene er bekreftet. Tidene for
-          <strong>fredag</strong> (Torrequebrada) og <strong>søndag ettermiddag</strong>
-          (Santana) er foreløpige estimater (merket «est.»). Selve Málaga Invitational
-          teller kun for de fem turneringsrundene (markert med
-          <Trophy class="inline h-3 w-3 align-[-1px]" /> – fredag, lørdag, søndag og
-          begge på mandag).
+          <strong>fredag</strong> (Torrequebrada) og
+          <strong>søndag ettermiddag</strong>
+          (Santana) er foreløpige estimater (merket «est.»). Selve Málaga
+          Invitational teller kun for de fem turneringsrundene (markert med
+          <Trophy class="inline h-3 w-3 align-[-1px]" /> – fredag, lørdag,
+          søndag og begge på mandag).
         </p>
       </div>
 
       <div class="mx-auto max-w-3xl space-y-5">
         <Card
-          v-for="day in schedule"
+          v-for="(day, i) in schedule"
           :key="day.id"
-          class="overflow-hidden transition-shadow hover:shadow-md"
+          v-reveal="i * 60"
+          class="overflow-hidden transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg"
           :class="day.highlight ? 'ring-2 ring-accent/60' : ''"
         >
           <div class="flex">
@@ -101,11 +103,23 @@ function mapsUrl(course: string) {
                   v-for="(r, i) in day.rounds"
                   :key="i"
                   class="rounded-xl border border-border p-3 sm:p-3.5"
-                  :class="r.isLiv ? 'border-accent/50 bg-accent/10' : r.tournament ? 'border-primary/40 bg-primary/5' : 'bg-card'"
+                  :class="
+                    r.isLiv
+                      ? 'border-accent/50 bg-accent/10'
+                      : r.tournament
+                        ? 'border-primary/40 bg-primary/5'
+                        : 'bg-card'
+                  "
                 >
-                  <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+                  <div
+                    class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5"
+                  >
                     <div class="flex min-w-0 items-center gap-2">
-                      <Trophy v-if="r.isLiv || r.tournament" class="h-4 w-4 shrink-0" :class="r.isLiv ? 'text-accent' : 'text-primary'" />
+                      <Trophy
+                        v-if="r.isLiv || r.tournament"
+                        class="h-4 w-4 shrink-0"
+                        :class="r.isLiv ? 'text-accent' : 'text-primary'"
+                      />
                       <Flag v-else class="h-4 w-4 shrink-0 text-primary" />
                       <span class="min-w-0 font-semibold">{{ r.course }}</span>
                       <a
@@ -149,7 +163,10 @@ function mapsUrl(course: string) {
                     >
                       <Car class="h-4 w-4 shrink-0" />
                       <span v-if="r.departure" class="whitespace-nowrap"
-                        >Dra <strong class="text-foreground">{{ r.departure }}</strong></span
+                        >Dra
+                        <strong class="text-foreground">{{
+                          r.departure
+                        }}</strong></span
                       >
                       <span v-if="r.driveTime" class="whitespace-nowrap"
                         >{{ r.driveTime }} kjøretur</span
@@ -162,7 +179,10 @@ function mapsUrl(course: string) {
                   </p>
 
                   <!-- Featured groups -->
-                  <div v-if="r.tournament" class="mt-3.5 border-t border-border pt-3">
+                  <div
+                    v-if="r.tournament"
+                    class="mt-3.5 border-t border-border pt-3"
+                  >
                     <p
                       class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
                     >
@@ -174,19 +194,32 @@ function mapsUrl(course: string) {
                         :key="f.name"
                         class="rounded-lg bg-secondary/60 p-2.5"
                       >
-                        <p class="text-xs font-bold text-foreground">{{ f.name }}</p>
+                        <p class="text-xs font-bold text-foreground">
+                          {{ f.name }}
+                        </p>
                         <ul class="mt-1 space-y-0.5 text-sm">
                           <li
                             v-for="(p, pi) in f.players"
                             :key="p"
-                            :class="pi === 0 ? 'font-medium' : 'text-muted-foreground'"
+                            :class="
+                              pi === 0 ? 'font-medium' : 'text-muted-foreground'
+                            "
                           >
-                            {{ p }}<span v-if="pi === 0" class="text-xs text-muted-foreground"> (fører score)</span>
+                            {{ p
+                            }}<span
+                              v-if="pi === 0"
+                              class="text-xs text-muted-foreground"
+                            >
+                              (fører score)</span
+                            >
                           </li>
                         </ul>
                       </div>
                     </div>
-                    <p v-if="r.flightsNote" class="mt-2 text-xs italic text-muted-foreground">
+                    <p
+                      v-if="r.flightsNote"
+                      class="mt-2 text-xs italic text-muted-foreground"
+                    >
                       {{ r.flightsNote }}
                     </p>
                   </div>
