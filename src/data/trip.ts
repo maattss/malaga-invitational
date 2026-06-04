@@ -283,6 +283,7 @@ export interface Player {
   hcp: number
   seed: string
   funFact: string
+  leader?: boolean
 }
 
 export const players: Player[] = [
@@ -290,13 +291,14 @@ export const players: Player[] = [
     name: 'Victor Gabrielsen',
     hcp: 3.0,
     seed: 'Victor-G',
-    funFact: 'Lavest handicap i gjengen – mannen alle vil ha på laget i scramble.',
+    leader: true,
+    funFact: 'Turens reiseleder og lavest i handicap – sjefen både i bussen og på fairway. Det han sier, gjelder (helt til neste putt).',
   },
   {
     name: 'Joachim Boxill Knutsen',
     hcp: 7.7,
     seed: 'Joachim-BK',
-    funFact: 'Halvparten av en farlig Boxill-duo – broderlig rivalisering garantert.',
+    funFact: 'Én av tre Boxill-brødre på turen – laveste handicap av brødrene og lar dem aldri glemme det.',
   },
   {
     name: 'Torbjørn Berge',
@@ -314,7 +316,7 @@ export const players: Player[] = [
     name: 'Andreas Boxill Knutsen',
     hcp: 12.0,
     seed: 'Andreas-BK',
-    funFact: 'Den andre Boxill-broren – holder familieæren høyt på greenen.',
+    funFact: 'Bror nummer to i Boxill-trioen – kjemper en evig kamp mot Joachim og Michael om familiens bragging rights.',
   },
   {
     name: 'Sander Bjørnaa',
@@ -338,7 +340,7 @@ export const players: Player[] = [
     name: 'Michael Boxill',
     hcp: 19.0,
     seed: 'Michael-B',
-    funFact: 'Boxill-klanens overhode – passer på at sønnene oppfører seg på banen.',
+    funFact: 'Den tredje Boxill-broren – høyest handicap av de tre, men hevder bestemt at han er den med mest stil.',
   },
   {
     name: 'Håkon Høiland',
@@ -350,7 +352,7 @@ export const players: Player[] = [
     name: 'Mats Tyldum',
     hcp: 23.3,
     seed: 'Mats-T',
-    funFact: 'Turens reiseleder og webmaster – laget denne siden mellom rundene.',
+    funFact: 'Turens webmaster – laget hele denne siden mellom rundene (og bruker det som unnskyldning for hver bogey).',
   },
   {
     name: 'Jørgen Håstø Borgenvik',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Users, Sparkles } from 'lucide-vue-next'
+import { Users, Sparkles, Star } from 'lucide-vue-next'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import SectionHeading from '@/components/SectionHeading.vue'
@@ -61,7 +61,11 @@ function onError(seed: string) {
 
               <div class="min-w-0 flex-1">
                 <p class="truncate font-semibold leading-tight">{{ p.name }}</p>
-                <p class="text-xs text-muted-foreground">Handicap</p>
+                <p v-if="p.leader" class="flex items-center gap-1 text-xs font-medium text-accent">
+                  <Star class="h-3 w-3 fill-current" />
+                  Reiseleder
+                </p>
+                <p v-else class="text-xs text-muted-foreground">Handicap</p>
               </div>
               <Badge variant="secondary" class="shrink-0 tabular-nums">
                 {{ p.hcp.toFixed(1) }}
