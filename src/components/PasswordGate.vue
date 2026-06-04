@@ -19,7 +19,7 @@ onMounted(() => {
 function submit() {
   if (value.value.trim() === PASSWORD) {
     try {
-      sessionStorage.setItem(STORAGE_KEY, "true");
+      localStorage.setItem(STORAGE_KEY, "true");
     } catch {
       /* ignore */
     }

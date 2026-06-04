@@ -17,7 +17,7 @@ const unlocked = ref(false)
 onMounted(() => {
   injectAnalytics()
   try {
-    if (sessionStorage.getItem('mi26-unlocked') === 'true') {
+    if (localStorage.getItem('mi26-unlocked') === 'true') {
       unlocked.value = true
     }
   } catch {
