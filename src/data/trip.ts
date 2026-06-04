@@ -1,3 +1,8 @@
+export interface Flight {
+  name: string
+  players: string[]
+}
+
 export interface TeeTime {
   course: string
   label: string
@@ -6,6 +11,9 @@ export interface TeeTime {
   departure?: string
   isLiv?: boolean
   limited?: boolean
+  tournament?: boolean
+  flights?: Flight[]
+  flightsNote?: string
 }
 
 export interface TripDay {
@@ -78,14 +86,21 @@ export const schedule: TripDay[] = [
     date: '5. juni',
     weekday: 'Fredag',
     short: 'FRE',
-    title: 'Runde 1 – Santana Golf',
+    title: 'Turneringsrunde 1 – Torrequebrada',
     rounds: [
       {
-        course: 'Santana Golf',
-        label: 'Runde 2 (offisiell start)',
+        course: 'Torrequebrada Golf Club',
+        label: 'Turneringsrunde 1',
         times: ['15:00'],
-        departure: '13:20',
-        note: 'Rolig oppstart etter ankomst. Lunsj før avreise.',
+        departure: '13:00',
+        tournament: true,
+        note: 'Eventyret starter her. Rolig oppstart etter ankomst – tonen settes.',
+        flights: [
+          { name: 'Flight 1', players: ['Solstrand', 'Sander', 'Torbjørn', 'Jørgen'] },
+          { name: 'Flight 2', players: ['Victor', 'Mats', 'Andreas', 'Håkon'] },
+          { name: 'Flight 3', players: ['Anders', 'Joachim', 'Michael', 'Pål'] },
+        ],
+        flightsNote: 'Spiller 1 i hver flight fører score i Golf Gamebook.',
       },
     ],
   },
@@ -94,15 +109,22 @@ export const schedule: TripDay[] = [
     date: '6. juni',
     weekday: 'Lørdag',
     short: 'LØR',
-    title: 'La Hacienda Links + LIV Golf',
+    title: 'Turneringsrunde 2 – La Hacienda + LIV Golf',
     highlight: true,
     rounds: [
       {
         course: 'La Hacienda Links (Alcaidesa)',
-        label: 'Morgenrunde',
+        label: 'Turneringsrunde 2',
         times: ['08:00', '08:12', '08:24'],
         departure: '06:00',
-        note: 'Tidlig start – linksbane helt vest mot Sotogrande.',
+        tournament: true,
+        note: 'Tidlig start – linksbane helt vest mot Sotogrande. Nærmest hjemmebane for Håkon.',
+        flights: [
+          { name: 'Flight 1', players: ['Joachim', 'Pål', 'Jørgen', 'Andreas'] },
+          { name: 'Flight 2', players: ['Solstrand', 'Victor', 'Torbjørn', 'Anders'] },
+          { name: 'Flight 3', players: ['Mats', 'Håkon', 'Michael', 'Sander'] },
+        ],
+        flightsNote: 'Spiller 1 i hver flight fører score i Golf Gamebook.',
       },
       {
         course: 'Real Club Valderrama',
@@ -118,22 +140,29 @@ export const schedule: TripDay[] = [
     date: '7. juni',
     weekday: 'Søndag',
     short: 'SØN',
-    title: 'Los Lagos + Torrequebrada',
+    title: 'Los Lagos + Turneringsrunde 3 (Santana)',
     rounds: [
       {
         course: 'Los Lagos (La Cala Resort)',
-        label: 'Morgenrunde',
+        label: 'Morgenrunde (sosial)',
         times: ['10:10', '10:20'],
-        departure: '08:30',
+        departure: '08:40',
         limited: true,
-        note: 'Frivillig ekstrarunde – kun de 8 mest ivrige spiller.',
+        note: 'Frivillig ekstrarunde – kun de 8 mest ivrige spiller. Teller ikke i turneringen.',
       },
       {
-        course: 'Torrequebrada',
-        label: 'Ettermiddagsrunde',
+        course: 'Santana Golf Club',
+        label: 'Turneringsrunde 3',
         times: ['16:30'],
         departure: '14:45',
-        note: 'Dobbel golfdag for de ivrigste – ta med nok mat og drikke.',
+        tournament: true,
+        note: 'Kjente trakter for de fleste – her er det mulig å hente inn det tapte.',
+        flights: [
+          { name: 'Flight 1', players: ['Mats', 'Victor', 'Sander', 'Anders'] },
+          { name: 'Flight 2', players: ['Håkon', 'Andreas', 'Solstrand', 'Pål'] },
+          { name: 'Flight 3', players: ['Michael', 'Jørgen', 'Joachim', 'Torbjørn'] },
+        ],
+        flightsNote: 'Spiller 1 i hver flight fører score i Golf Gamebook.',
       },
     ],
   },
@@ -142,20 +171,23 @@ export const schedule: TripDay[] = [
     date: '8. juni',
     weekday: 'Mandag',
     short: 'MAN',
-    title: 'Rio Real – dobbel runde',
+    title: 'Turneringsrunde 4 & 5 – Rio Real',
     rounds: [
       {
         course: 'Rio Real (Marbella)',
-        label: 'Morgenrunde',
+        label: 'Turneringsrunde 4',
         times: ['08:30', '08:40', '08:50'],
         departure: '06:55',
+        tournament: true,
+        flightsNote: 'Gruppene avgjøres basert på leaderboarden etter de tre innledende rundene.',
       },
       {
         course: 'Rio Real (Marbella)',
-        label: 'Ettermiddagsrunde',
+        label: 'Turneringsrunde 5',
         times: ['14:00', '14:10', '14:20'],
         departure: 'På banen',
-        note: 'Bli værende på Rio Real mellom rundene – lunsj i klubbhuset.',
+        tournament: true,
+        note: 'To runder, én dag, null nåde – her avgjøres det hele. Bli på Rio Real mellom rundene.',
       },
     ],
   },
@@ -257,10 +289,11 @@ export const liv = {
 
 export const tournament = {
   intro:
-    'Málaga Invitational er vår egen turnering som spilles parallelt med golfrundene. 12 spillere kjemper om vandretrofeet over uka.',
+    'Málaga Invitational er vår egen turnering – 90 hulls slagspill over fem runder og fire baner. Turneringen avgjøres fredag ettermiddag (Torrequebrada), lørdag morgen (La Hacienda), søndag ettermiddag (Santana) og begge rundene mandag (Rio Real). Øvrige runder i uka er sosiale.',
   format: [
     { label: 'Spillere', value: '12 stk' },
-    { label: 'Format', value: 'Stableford / slagspill' },
+    { label: 'Format', value: 'Slagspill · 90 hull / 5 runder' },
+    { label: 'Baner', value: '4 baner over 4 dager' },
     { label: 'Handicap', value: '75 % av spillehandicap' },
     { label: 'Scoring', value: 'Golf Gamebook (live leaderboard)' },
   ],

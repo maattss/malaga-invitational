@@ -7,6 +7,7 @@ import {
   PlaneTakeoff,
   Star,
   Users,
+  Info,
 } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,19 @@ import { schedule } from "@/data/trip";
         title="Dag-for-dag program"
         description="Tee-tider og anbefalt avreisetid for hver bane. Avreisetidene inkluderer 30 min buffer før første tee – juster ved behov."
       />
+
+      <div
+        class="mx-auto mb-8 flex max-w-3xl items-start gap-2.5 rounded-xl border border-amber-300/60 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
+      >
+        <Info class="mt-0.5 h-4 w-4 shrink-0" />
+        <p>
+          <strong>Merk:</strong> Alle tee-tider er foreløpige estimater og er
+          <strong>ikke bekreftet</strong> ennå. Selve Málaga Invitational teller kun
+          for de fem turneringsrundene (markert med
+          <Trophy class="inline h-3 w-3 align-[-1px]" /> – fredag, lørdag, søndag og
+          begge på mandag). Øvrige runder er sosiale.
+        </p>
+      </div>
 
       <div class="mx-auto max-w-3xl space-y-5">
         <Card
@@ -79,11 +93,11 @@ import { schedule } from "@/data/trip";
                   v-for="(r, i) in day.rounds"
                   :key="i"
                   class="rounded-xl border border-border p-3.5"
-                  :class="r.isLiv ? 'border-accent/50 bg-accent/10' : 'bg-card'"
+                  :class="r.isLiv ? 'border-accent/50 bg-accent/10' : r.tournament ? 'border-primary/40 bg-primary/5' : 'bg-card'"
                 >
                   <div class="flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2">
-                      <Trophy v-if="r.isLiv" class="h-4 w-4 text-accent" />
+                      <Trophy v-if="r.isLiv || r.tournament" class="h-4 w-4" :class="r.isLiv ? 'text-accent' : 'text-primary'" />
                       <Flag v-else class="h-4 w-4 text-primary" />
                       <span class="font-semibold">{{ r.course }}</span>
                     </div>
@@ -105,6 +119,11 @@ import { schedule } from "@/data/trip";
                       <span class="tabular-nums">{{
                         r.times.join(" · ")
                       }}</span>
+                      <span
+                        v-if="!r.isLiv"
+                        class="text-xs font-normal text-muted-foreground"
+                        >(est.)</span
+                      >
                     </span>
                     <span
                       v-if="r.departure"
@@ -119,6 +138,36 @@ import { schedule } from "@/data/trip";
                   <p v-if="r.note" class="mt-2.5 text-sm text-muted-foreground">
                     {{ r.note }}
                   </p>
+
+                  <!-- Featured groups -->
+                  <div v-if="r.tournament" class="mt-3.5 border-t border-border pt-3">
+                    <p
+                      class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+                    >
+                      <Users class="h-3.5 w-3.5" /> Featured groups
+                    </p>
+                    <div v-if="r.flights" class="grid gap-2 sm:grid-cols-3">
+                      <div
+                        v-for="f in r.flights"
+                        :key="f.name"
+                        class="rounded-lg bg-secondary/60 p-2.5"
+                      >
+                        <p class="text-xs font-bold text-foreground">{{ f.name }}</p>
+                        <ul class="mt-1 space-y-0.5 text-sm">
+                          <li
+                            v-for="(p, pi) in f.players"
+                            :key="p"
+                            :class="pi === 0 ? 'font-medium' : 'text-muted-foreground'"
+                          >
+                            {{ p }}<span v-if="pi === 0" class="text-xs text-muted-foreground"> (fører score)</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <p v-if="r.flightsNote" class="mt-2 text-xs italic text-muted-foreground">
+                      {{ r.flightsNote }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </CardContent>
