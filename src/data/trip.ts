@@ -52,13 +52,14 @@ export const flights = {
 }
 
 export const accommodation = {
-  name: 'Felles Airbnb – Costa del Sol',
+  name: 'Villa Luz de Verano',
+  location: 'Las Lagunas, Mijas · Andalucía',
+  image: '/airbnb.jpg',
   url: 'https://www.airbnb.no/rooms/23209897',
   checkIn: 'Torsdag 4. juni (sen kveld etter landing)',
   checkOut: 'Torsdag 11. juni',
   notes: [
     'Adresse og innsjekk-detaljer finner du i Airbnb-appen.',
-    'Leiebil(er) anbefales – banene ligger spredt langs kysten.',
   ],
 }
 
@@ -279,19 +280,81 @@ export const tournament = {
 export interface Player {
   name: string
   hcp: number
+  seed: string
+  funFact: string
 }
 
 export const players: Player[] = [
-  { name: 'Victor Gabrielsen', hcp: 3.0 },
-  { name: 'Joachim Boxill Knutsen', hcp: 7.7 },
-  { name: 'Torbjørn Berge', hcp: 11.2 },
-  { name: 'Joakim Solstrand', hcp: 11.4 },
-  { name: 'Andreas Boxill Knutsen', hcp: 12.0 },
-  { name: 'Sander Bjørnaa', hcp: 13.0 },
-  { name: 'Anders Fjelde', hcp: 16.3 },
-  { name: 'Paal Lilleås', hcp: 18.0 },
-  { name: 'Michael Boxill', hcp: 19.0 },
-  { name: 'Håkon Høiland', hcp: 22.5 },
-  { name: 'Mats Tyldum', hcp: 23.3 },
-  { name: 'Jørgen Håstø Borgenvik', hcp: 26.0 },
+  {
+    name: 'Victor Gabrielsen',
+    hcp: 3.0,
+    seed: 'Victor-G',
+    funFact: 'Lavest handicap i gjengen – mannen alle vil ha på laget i scramble.',
+  },
+  {
+    name: 'Joachim Boxill Knutsen',
+    hcp: 7.7,
+    seed: 'Joachim-BK',
+    funFact: 'Halvparten av en farlig Boxill-duo – broderlig rivalisering garantert.',
+  },
+  {
+    name: 'Torbjørn Berge',
+    hcp: 11.2,
+    seed: 'Torbjorn-B',
+    funFact: 'Stødig som et fjell på fairway – derav etternavnet.',
+  },
+  {
+    name: 'Joakim Solstrand',
+    hcp: 11.4,
+    seed: 'Joakim-S',
+    funFact: 'Regjerende rekordholder med 2 napp i vandretrofeet – jakter nappet for evig eierskap.',
+  },
+  {
+    name: 'Andreas Boxill Knutsen',
+    hcp: 12.0,
+    seed: 'Andreas-BK',
+    funFact: 'Den andre Boxill-broren – holder familieæren høyt på greenen.',
+  },
+  {
+    name: 'Sander Bjørnaa',
+    hcp: 13.0,
+    seed: 'Sander-B',
+    funFact: 'Fjorårets vinner og vert for Champions Dinner – tittelforsvarer i Málaga.',
+  },
+  {
+    name: 'Anders Fjelde',
+    hcp: 16.3,
+    seed: 'Anders-F',
+    funFact: 'Spiller best når det står en cerveza og venter på 19. hull.',
+  },
+  {
+    name: 'Paal Lilleås',
+    hcp: 18.0,
+    seed: 'Paal-L',
+    funFact: 'Eksakt 18 i handicap – én bogey per hull er planen, og den funker.',
+  },
+  {
+    name: 'Michael Boxill',
+    hcp: 19.0,
+    seed: 'Michael-B',
+    funFact: 'Boxill-klanens overhode – passer på at sønnene oppfører seg på banen.',
+  },
+  {
+    name: 'Håkon Høiland',
+    hcp: 22.5,
+    seed: 'Hakon-H',
+    funFact: 'Lengst driver i gjengen … når den treffer fairway.',
+  },
+  {
+    name: 'Mats Tyldum',
+    hcp: 23.3,
+    seed: 'Mats-T',
+    funFact: 'Turens reiseleder og webmaster – laget denne siden mellom rundene.',
+  },
+  {
+    name: 'Jørgen Håstø Borgenvik',
+    hcp: 26.0,
+    seed: 'Jorgen-HB',
+    funFact: 'Høyest handicap betyr flest slag for pengene – maks valuta for greenfee.',
+  },
 ]

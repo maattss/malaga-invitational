@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Users } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { Users, Sparkles } from 'lucide-vue-next'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import SectionHeading from '@/components/SectionHeading.vue'
@@ -13,6 +14,17 @@ function initials(name: string) {
     .join('')
     .toUpperCase()
 }
+
+function avatar(seed: string) {
+  return `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(
+    seed,
+  )}&backgroundColor=c0e8d5,b6e3c5,d1f0e0&radius=50`
+}
+
+const failed = ref<Record<string, boolean>>({})
+function onError(seed: string) {
+  failed.value[seed] = true
+}
 </script>
 
 <template>
@@ -24,25 +36,44 @@ function initials(name: string) {
         description="12 spillere kjemper om heder, ære og vandretrofeet – sortert etter handicap."
       />
 
-      <div class="mx-auto grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card
           v-for="p in players"
           :key="p.name"
-          class="transition-shadow hover:shadow-md"
+          class="overflow-hidden transition-shadow hover:shadow-md"
         >
-          <CardContent class="flex items-center gap-3 p-4">
-            <span
-              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground"
-            >
-              {{ initials(p.name) }}
-            </span>
-            <div class="min-w-0 flex-1">
-              <p class="truncate font-semibold leading-tight">{{ p.name }}</p>
-              <p class="text-xs text-muted-foreground">Handicap</p>
+          <CardContent class="p-5">
+            <div class="flex items-center gap-3">
+              <img
+                v-if="!failed[p.seed]"
+                :src="avatar(p.seed)"
+                :alt="p.name"
+                loading="lazy"
+                class="h-14 w-14 shrink-0 rounded-full border border-border bg-secondary object-cover"
+                @error="onError(p.seed)"
+              />
+              <span
+                v-else
+                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground"
+              >
+                {{ initials(p.name) }}
+              </span>
+
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-semibold leading-tight">{{ p.name }}</p>
+                <p class="text-xs text-muted-foreground">Handicap</p>
+              </div>
+              <Badge variant="secondary" class="shrink-0 tabular-nums">
+                {{ p.hcp.toFixed(1) }}
+              </Badge>
             </div>
-            <Badge variant="secondary" class="shrink-0 tabular-nums">
-              {{ p.hcp.toFixed(1) }}
-            </Badge>
+
+            <div
+              class="mt-4 flex items-start gap-2 rounded-xl bg-secondary/60 p-3 text-sm"
+            >
+              <Sparkles class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+              <span class="text-muted-foreground">{{ p.funFact }}</span>
+            </div>
           </CardContent>
         </Card>
       </div>

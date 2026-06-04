@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Home, LogIn, LogOut, ExternalLink, Check } from "lucide-vue-next";
+import { LogIn, LogOut, ExternalLink, Check, MapPin } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading.vue";
@@ -12,22 +12,29 @@ import { accommodation } from "@/data/trip";
       <SectionHeading
         eyebrow="Overnatting"
         title="Hvor vi bor"
-        description="Hele gjengen bor samlet i felles Airbnb på Costa del Sol."
+        description="Hele gjengen bor samlet i felles villa på Costa del Sol."
       />
 
       <Card class="mx-auto max-w-3xl overflow-hidden">
-        <div class="hero-gradient relative p-8 text-white">
-          <div
-            class="fairway-texture pointer-events-none absolute inset-0 opacity-30"
+        <div class="relative">
+          <img
+            :src="accommodation.image"
+            :alt="accommodation.name"
+            class="h-56 w-full object-cover sm:h-72"
+            loading="lazy"
           />
-          <div class="relative flex items-start justify-between gap-4">
-            <div>
-              <span
-                class="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 backdrop-blur"
-              >
-                <Home class="h-6 w-6" />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+          />
+          <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
+            <div class="min-w-0 text-white">
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-white/80">
+                <MapPin class="h-3.5 w-3.5" />
+                {{ accommodation.location }}
               </span>
-              <h3 class="mt-4 text-2xl font-bold">{{ accommodation.name }}</h3>
+              <h3 class="mt-1 text-2xl font-bold leading-tight drop-shadow">
+                {{ accommodation.name }}
+              </h3>
             </div>
             <Button :href="accommodation.url" variant="accent" class="shrink-0">
               Åpne i Airbnb
