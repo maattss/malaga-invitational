@@ -9,6 +9,7 @@ import {
   Users,
   Info,
   MapPin,
+  Navigation,
 } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -150,6 +151,13 @@ function mapsUrl(course: string) {
                       <Car class="h-4 w-4" />
                       Dra ca.
                       <strong class="text-foreground">{{ r.departure }}</strong>
+                    </span>
+                    <span
+                      v-if="r.driveTime"
+                      class="inline-flex items-center gap-1.5 text-muted-foreground"
+                    >
+                      <Navigation class="h-4 w-4" />
+                      <span>{{ r.driveTime }} kjøring</span>
                     </span>
                   </div>
 

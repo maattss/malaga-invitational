@@ -6,6 +6,7 @@ const links = [
   { href: "#oversikt", label: "Oversikt" },
   { href: "#fly", label: "Fly" },
   { href: "#bo", label: "Bo" },
+  { href: "#vaer", label: "Vær" },
   { href: "#program", label: "Program" },
   { href: "#liv", label: "LIV Golf" },
   { href: "#turnering", label: "Turnering" },

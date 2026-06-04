@@ -5,6 +5,7 @@ import SiteNav from '@/components/SiteNav.vue'
 import HeroSection from '@/components/sections/HeroSection.vue'
 import FlightsSection from '@/components/sections/FlightsSection.vue'
 import AccommodationSection from '@/components/sections/AccommodationSection.vue'
+import WeatherSection from '@/components/sections/WeatherSection.vue'
 import ScheduleSection from '@/components/sections/ScheduleSection.vue'
 import LivSection from '@/components/sections/LivSection.vue'
 import TournamentSection from '@/components/sections/TournamentSection.vue'
@@ -35,6 +36,7 @@ onMounted(() => {
       <HeroSection />
       <FlightsSection />
       <AccommodationSection />
+      <WeatherSection />
       <ScheduleSection />
       <LivSection />
       <TournamentSection />

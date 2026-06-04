@@ -9,6 +9,7 @@ export interface TeeTime {
   times: string[]
   note?: string
   departure?: string
+  driveTime?: string
   isLiv?: boolean
   limited?: boolean
   tournament?: boolean
@@ -65,6 +66,8 @@ export const accommodation = {
   location: 'Las Lagunas, Mijas · Andalucía',
   image: '/airbnb.jpg',
   url: 'https://www.airbnb.no/rooms/23209897',
+  lat: 36.5096,
+  lon: -4.6536,
   checkIn: 'Torsdag 4. juni (sen kveld etter landing)',
   checkOut: 'Torsdag 11. juni',
   notes: [
@@ -94,6 +97,7 @@ export const schedule: TripDay[] = [
         label: 'Turneringsrunde 1',
         times: ['15:00'],
         departure: '13:00',
+        driveTime: '~20 min',
         tournament: true,
         estimate: true,
         note: 'Eventyret starter her. Rolig oppstart etter ankomst – tonen settes.',
@@ -118,6 +122,7 @@ export const schedule: TripDay[] = [
         label: 'Turneringsrunde 2',
         times: ['08:00', '08:12', '08:24'],
         departure: '06:00',
+        driveTime: '~55 min',
         tournament: true,
         note: 'Tidlig start – linksbane helt vest mot Sotogrande. Nærmest hjemmebane for Håkon.',
         flights: [
@@ -130,6 +135,7 @@ export const schedule: TripDay[] = [
         course: 'Real Club Valderrama',
         label: 'LIV Golf Andalucía',
         times: ['Ettermiddag'],
+        driveTime: '~55 min',
         isLiv: true,
         note: 'Vi går rett fra Hacienda til LIV Golf på Valderrama. Se eget kort under.',
       },
@@ -147,6 +153,7 @@ export const schedule: TripDay[] = [
         label: 'Morgenrunde (sosial)',
         times: ['10:10', '10:20'],
         departure: '08:40',
+        driveTime: '~15 min',
         limited: true,
         note: 'Frivillig ekstrarunde – kun de 8 mest ivrige spiller. Teller ikke i turneringen.',
       },
@@ -155,6 +162,7 @@ export const schedule: TripDay[] = [
         label: 'Turneringsrunde 3',
         times: ['16:30'],
         departure: '14:45',
+        driveTime: '~30 min',
         tournament: true,
         estimate: true,
         note: 'Kjente trakter for de fleste – her er det mulig å hente inn det tapte.',
@@ -178,6 +186,7 @@ export const schedule: TripDay[] = [
         label: 'Turneringsrunde 4',
         times: ['08:30', '08:40', '08:50'],
         departure: '06:55',
+        driveTime: '~25 min',
         tournament: true,
         flightsNote: 'Gruppene avgjøres basert på leaderboarden etter de tre innledende rundene.',
       },
@@ -202,6 +211,7 @@ export const schedule: TripDay[] = [
         label: 'Morgenrunde',
         times: ['08:00', '08:12', '08:24'],
         departure: '06:15',
+        driveTime: '~20 min',
         note: 'Mulig playoff: står to eller flere likt etter de fem turneringsrundene, avgjøres det med matchplay head-to-head over 18 hull her tirsdag morgen.',
       },
       {
@@ -209,6 +219,7 @@ export const schedule: TripDay[] = [
         label: 'Ettermiddagsrunde',
         times: ['14:10', '14:20'],
         departure: '12:30',
+        driveTime: '~30 min',
         note: '4 av gjengen reiser hjem i dag.',
       },
     ],
@@ -225,6 +236,7 @@ export const schedule: TripDay[] = [
         label: 'Morgenrunde',
         times: ['09:00', '09:10'],
         departure: '07:25',
+        driveTime: '~30 min',
       },
       {
         course: 'Los Naranjos (Nueva Andalucía)',
