@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { Flag } from "lucide-vue-next";
+import { Flag, Download } from "lucide-vue-next";
 </script>
 
 <template>
-  <footer class="hero-gradient relative overflow-hidden text-white">
+  <footer
+    class="hero-gradient relative overflow-hidden text-white"
+    style="padding-bottom: env(safe-area-inset-bottom)"
+  >
     <div
       class="fairway-texture pointer-events-none absolute inset-0 opacity-25"
     />
@@ -17,15 +20,13 @@ import { Flag } from "lucide-vue-next";
       <p class="mt-1 text-sm text-white/70">
         Costa del Sol · 4.–11. juni · 12 spillere
       </p>
-      <p class="mt-6 text-xs text-white/70">
-        Ha en fantastisk golftur, gutta! 🏌️‍♂️⛳️🇪🇸
-      </p>
       <a
         href="/Malaga-Invitational-2026.pdf"
         download
         target="_blank"
-        class="mt-4 inline-block text-[11px] text-white/40 underline-offset-2 transition hover:text-white/70 hover:underline"
+        class="mt-6 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur transition hover:bg-white/20 hover:text-white"
       >
+        <Download class="h-4 w-4" />
         Infoskriv (PDF)
       </a>
     </div>
