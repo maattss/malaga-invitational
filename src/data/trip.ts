@@ -204,7 +204,7 @@ export const schedule: TripDay[] = [
     weekday: 'Tirsdag',
     short: 'TIR',
     title: 'Torrequebrada + Santana',
-    travel: 'Hjemreise gruppe 1 (4 stk): Málaga (AGP) → Stavanger (SVG) kl. 16:50. Vær på flyplassen i god tid – lever leiebil og sjekk inn køller.',
+    travel: 'Hjemreise gruppe 1 (4 stk): Málaga (AGP) → Stavanger (SVG) kl. 16:50.',
     rounds: [
       {
         course: 'Torrequebrada',

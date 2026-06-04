@@ -46,45 +46,69 @@ function describe(code: number): { icon: LucideIcon; label: string } {
   return { icon: CloudLightning, label: "Torden" };
 }
 
-onMounted(async () => {
+async function fetchWeather(signal: AbortSignal) {
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${accommodation.lat}` +
+    `&longitude=${accommodation.lon}` +
+    `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
+    `&timezone=Europe%2FMadrid&forecast_days=8`;
+  const res = await fetch(url, { signal });
+  if (!res.ok) throw new Error("weather fetch failed");
+  return res.json();
+}
+
+async function withTimeout(ms: number) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
   try {
-    const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${accommodation.lat}` +
-      `&longitude=${accommodation.lon}` +
-      `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
-      `&timezone=Europe%2FMadrid&forecast_days=8`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("weather fetch failed");
-    const data = await res.json();
-    const d = data.daily;
-    days.value = d.time.map((iso: string, i: number) => {
-      const dt = new Date(iso + "T12:00:00");
-      const meta = describe(d.weather_code[i]);
-      return {
-        date: iso,
-        weekday: weekdays[dt.getDay()],
-        day: dt.getDate(),
-        icon: meta.icon,
-        label: meta.label,
-        max: Math.round(d.temperature_2m_max[i]),
-        min: Math.round(d.temperature_2m_min[i]),
-        rain: d.precipitation_probability_max?.[i] ?? 0,
-      };
-    });
-    updatedAt.value = new Intl.DateTimeFormat("no-NO", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Madrid",
-    }).format(new Date());
-  } catch {
-    failed.value = true;
+    return await fetchWeather(ctrl.signal);
   } finally {
-    loading.value = false;
+    clearTimeout(timer);
   }
-});
+}
+
+async function load() {
+  loading.value = true;
+  failed.value = false;
+  // The Open-Meteo API can be slow/flaky; time out and retry a couple of times.
+  const attempts = 3;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const data = await withTimeout(8000);
+      const d = data.daily;
+      days.value = d.time.map((iso: string, idx: number) => {
+        const dt = new Date(iso + "T12:00:00");
+        const meta = describe(d.weather_code[idx]);
+        return {
+          date: iso,
+          weekday: weekdays[dt.getDay()],
+          day: dt.getDate(),
+          icon: meta.icon,
+          label: meta.label,
+          max: Math.round(d.temperature_2m_max[idx]),
+          min: Math.round(d.temperature_2m_min[idx]),
+          rain: d.precipitation_probability_max?.[idx] ?? 0,
+        };
+      });
+      updatedAt.value = new Intl.DateTimeFormat("no-NO", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Europe/Madrid",
+      }).format(new Date());
+      loading.value = false;
+      return;
+    } catch {
+      if (i < attempts - 1) await new Promise((r) => setTimeout(r, 1200));
+    }
+  }
+  failed.value = true;
+  loading.value = false;
+}
+
+onMounted(load);
 </script>
 
 <template>
@@ -101,13 +125,22 @@ onMounted(async () => {
         <span class="ml-2 text-sm">Henter værmelding …</span>
       </div>
 
-      <p
+      <div
         v-else-if="failed"
-        class="mx-auto max-w-md rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground"
+        class="mx-auto max-w-md rounded-xl border border-border bg-card p-6 text-center"
       >
-        Fikk ikke hentet værmeldingen akkurat nå. Sjekk yr.no eller Met-appen for
-        oppdatert varsel.
-      </p>
+        <p class="text-sm text-muted-foreground">
+          Fikk ikke hentet værmeldingen akkurat nå. Sjekk yr.no eller Met-appen for
+          oppdatert varsel.
+        </p>
+        <button
+          type="button"
+          class="mt-4 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          @click="load"
+        >
+          Prøv igjen
+        </button>
+      </div>
 
       <div
         v-else
