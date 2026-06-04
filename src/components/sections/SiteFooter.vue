@@ -20,6 +20,14 @@ import { Flag } from "lucide-vue-next";
       <p class="mt-6 text-xs text-white/50">
         Ha en fantastisk golftur, gutta! 🏌️‍♂️⛳️🇪🇸
       </p>
+      <a
+        href="/Malaga-Invitational-2026.pdf"
+        download
+        target="_blank"
+        class="mt-4 inline-block text-[11px] text-white/40 underline-offset-2 transition hover:text-white/70 hover:underline"
+      >
+        Infoskriv (PDF)
+      </a>
     </div>
   </footer>
 </template>
