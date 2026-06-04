@@ -256,7 +256,6 @@ export const liv = {
 }
 
 export const tournament = {
-  gamebookCode: 'V33WMIR5W',
   intro:
     'Málaga Invitational er vår egen turnering som spilles parallelt med golfrundene. 12 spillere kjemper om vandretrofeet over uka.',
   format: [

@@ -21,10 +21,20 @@ function avatar(seed: string) {
   )}&backgroundColor=c0e8d5,b6e3c5,d1f0e0&radius=50`
 }
 
-const failed = ref<Record<string, boolean>>({})
-function onError(seed: string) {
-  failed.value[seed] = true
+const photoModules = import.meta.glob('@/assets/players/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>
+
+function photo(seed: string): string | undefined {
+  const entry = Object.entries(photoModules).find(([path]) =>
+    path.split('/').pop()?.replace(/\.[^.]+$/, '') === seed,
+  )
+  return entry?.[1]
 }
+
+const photoFailed = ref<Record<string, boolean>>({})
+const avatarFailed = ref<Record<string, boolean>>({})
 </script>
 
 <template>
@@ -45,12 +55,20 @@ function onError(seed: string) {
           <CardContent class="p-5">
             <div class="flex items-center gap-3">
               <img
-                v-if="!failed[p.seed]"
+                v-if="photo(p.seed) && !photoFailed[p.seed]"
+                :src="photo(p.seed)"
+                :alt="p.name"
+                loading="lazy"
+                class="h-14 w-14 shrink-0 rounded-full border border-border bg-secondary object-cover"
+                @error="photoFailed[p.seed] = true"
+              />
+              <img
+                v-else-if="!avatarFailed[p.seed]"
                 :src="avatar(p.seed)"
                 :alt="p.name"
                 loading="lazy"
                 class="h-14 w-14 shrink-0 rounded-full border border-border bg-secondary object-cover"
-                @error="onError(p.seed)"
+                @error="avatarFailed[p.seed] = true"
               />
               <span
                 v-else
