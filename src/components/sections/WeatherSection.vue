@@ -79,7 +79,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section id="vaer" class="scroll-mt-20 py-20">
+  <section id="vaer" class="scroll-mt-20 bg-secondary/40 py-20">
     <div class="container">
       <SectionHeading
         eyebrow="Vær"

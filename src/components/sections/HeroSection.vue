@@ -89,7 +89,7 @@ const facts = [
           </Button>
         </div>
 
-        <div class="mx-auto mt-12 grid max-w-md grid-cols-4 gap-2 sm:gap-3">
+        <div class="mx-auto mt-12 grid max-w-md grid-cols-4 gap-2 sm:gap-3" aria-hidden="true">
           <div
             v-for="u in units"
             :key="u.l"
@@ -100,12 +100,12 @@ const facts = [
             >
               {{ String(u.v).padStart(2, "0") }}
             </div>
-            <div class="text-[11px] uppercase tracking-wide text-white/60">
+            <div class="text-[11px] uppercase tracking-wide text-white/70">
               {{ u.l }}
             </div>
           </div>
         </div>
-        <p class="mt-3 text-xs text-white/60">
+        <p class="mt-3 text-xs text-white/70">
           {{
             countdown.started
               ? "Turen er i gang – nyt Spania! 🇪🇸"

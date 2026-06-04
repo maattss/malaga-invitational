@@ -17,7 +17,7 @@ import { Flag } from "lucide-vue-next";
       <p class="mt-1 text-sm text-white/70">
         Costa del Sol · 4.–11. juni · 12 spillere
       </p>
-      <p class="mt-6 text-xs text-white/50">
+      <p class="mt-6 text-xs text-white/70">
         Ha en fantastisk golftur, gutta! 🏌️‍♂️⛳️🇪🇸
       </p>
       <a

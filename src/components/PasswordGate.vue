@@ -56,15 +56,19 @@ function submit() {
 
       <form class="mt-6 space-y-3" @submit.prevent="submit">
         <div class="relative">
+          <label for="mi-password" class="sr-only">Passord</label>
           <Lock
             class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50"
           />
           <input
+            id="mi-password"
             ref="inputEl"
             v-model="value"
             type="password"
             inputmode="numeric"
+            autocomplete="current-password"
             placeholder="••••"
+            aria-label="Passord"
             class="h-12 w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-4 text-center text-lg font-semibold tracking-[0.3em] text-white placeholder:text-white/30 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/50"
             @input="error = false"
           />

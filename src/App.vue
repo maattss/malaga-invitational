@@ -11,6 +11,7 @@ import LivSection from '@/components/sections/LivSection.vue'
 import TournamentSection from '@/components/sections/TournamentSection.vue'
 import PlayersSection from '@/components/sections/PlayersSection.vue'
 import SiteFooter from '@/components/sections/SiteFooter.vue'
+import BackToTop from '@/components/BackToTop.vue'
 import { inject as injectAnalytics } from '@vercel/analytics'
 
 const unlocked = ref(false)
@@ -43,5 +44,6 @@ onMounted(() => {
       <PlayersSection />
     </main>
     <SiteFooter />
+    <BackToTop />
   </template>
 </template>

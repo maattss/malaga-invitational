@@ -7,7 +7,7 @@ import { accommodation } from "@/data/trip";
 </script>
 
 <template>
-  <section id="bo" class="scroll-mt-20 bg-secondary/40 py-20">
+  <section id="bo" class="scroll-mt-20 py-20">
     <div class="container">
       <SectionHeading
         eyebrow="Overnatting"
