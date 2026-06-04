@@ -55,7 +55,7 @@ function mapsUrl(course: string) {
           <div class="flex">
             <!-- Date rail -->
             <div
-              class="flex w-20 shrink-0 flex-col items-center justify-center border-r border-border bg-secondary/50 px-2 py-5 text-center sm:w-24"
+              class="flex w-14 shrink-0 flex-col items-center justify-center border-r border-border bg-secondary/50 px-1 py-5 text-center sm:w-24 sm:px-2"
               :class="day.highlight ? 'bg-accent/15' : ''"
             >
               <span
@@ -69,7 +69,7 @@ function mapsUrl(course: string) {
               <span class="text-xs text-muted-foreground">juni</span>
             </div>
 
-            <CardContent class="min-w-0 flex-1 p-5">
+            <CardContent class="min-w-0 flex-1 p-4 sm:p-5">
               <div class="flex items-start justify-between gap-3">
                 <div class="min-w-0">
                   <p
@@ -100,7 +100,7 @@ function mapsUrl(course: string) {
                 <div
                   v-for="(r, i) in day.rounds"
                   :key="i"
-                  class="rounded-xl border border-border p-3.5"
+                  class="rounded-xl border border-border p-3 sm:p-3.5"
                   :class="r.isLiv ? 'border-accent/50 bg-accent/10' : r.tournament ? 'border-primary/40 bg-primary/5' : 'bg-card'"
                 >
                   <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
@@ -130,10 +130,10 @@ function mapsUrl(course: string) {
                   </div>
 
                   <div
-                    class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm"
+                    class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm"
                   >
                     <span class="inline-flex items-center gap-1.5 font-medium">
-                      <Clock class="h-4 w-4 text-muted-foreground" />
+                      <Clock class="h-4 w-4 shrink-0 text-muted-foreground" />
                       <span class="tabular-nums">{{
                         r.times.join(" · ")
                       }}</span>
@@ -145,14 +145,15 @@ function mapsUrl(course: string) {
                     </span>
                     <span
                       v-if="r.departure || r.driveTime"
-                      class="inline-flex items-center gap-1.5 text-muted-foreground"
+                      class="inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground"
                     >
-                      <Car class="h-4 w-4" />
-                      <span v-if="r.departure"
+                      <Car class="h-4 w-4 shrink-0" />
+                      <span v-if="r.departure" class="whitespace-nowrap"
                         >Dra <strong class="text-foreground">{{ r.departure }}</strong></span
                       >
-                      <span v-if="r.departure && r.driveTime" class="text-muted-foreground/50">·</span>
-                      <span v-if="r.driveTime">{{ r.driveTime }} kjøretur</span>
+                      <span v-if="r.driveTime" class="whitespace-nowrap"
+                        >{{ r.driveTime }} kjøretur</span
+                      >
                     </span>
                   </div>
 
