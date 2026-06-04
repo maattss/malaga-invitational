@@ -31,21 +31,8 @@ const days = ref<Day[]>([]);
 const loading = ref(true);
 const failed = ref(false);
 const updatedAt = ref("");
-const source = ref<"open-meteo" | "met">("open-meteo");
 
 const weekdays = ["søn", "man", "tir", "ons", "tor", "fre", "lør"];
-
-function describe(code: number): { icon: LucideIcon; label: string } {
-  if (code === 0) return { icon: Sun, label: "Klart" };
-  if (code <= 2) return { icon: CloudSun, label: "Lettskyet" };
-  if (code === 3) return { icon: Cloud, label: "Skyet" };
-  if (code <= 48) return { icon: CloudFog, label: "Tåke" };
-  if (code <= 67) return { icon: CloudRain, label: "Regn" };
-  if (code <= 77) return { icon: CloudSnow, label: "Sludd" };
-  if (code <= 82) return { icon: CloudRain, label: "Regnbyger" };
-  if (code <= 86) return { icon: CloudSnow, label: "Snøbyger" };
-  return { icon: CloudLightning, label: "Torden" };
-}
 
 // Map a MET Norway symbol_code (e.g. "partlycloudy_day") to our icon + Norwegian label.
 function describeMet(symbol: string): { icon: LucideIcon; label: string } {
@@ -79,32 +66,6 @@ function madridDateHour(iso: string): { date: string; hour: number } {
     date: `${get("year")}-${get("month")}-${get("day")}`,
     hour: parseInt(get("hour"), 10) % 24,
   };
-}
-
-async function fetchOpenMeteo(signal: AbortSignal): Promise<Day[]> {
-  const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${accommodation.lat}` +
-    `&longitude=${accommodation.lon}` +
-    `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
-    `&timezone=Europe%2FMadrid&forecast_days=8`;
-  const res = await fetch(url, { signal });
-  if (!res.ok) throw new Error("open-meteo fetch failed");
-  const data = await res.json();
-  const d = data.daily;
-  return d.time.map((iso: string, idx: number): Day => {
-    const dt = new Date(iso + "T12:00:00");
-    const meta = describe(d.weather_code[idx]);
-    return {
-      date: iso,
-      weekday: weekdays[dt.getDay()],
-      day: dt.getDate(),
-      icon: meta.icon,
-      label: meta.label,
-      max: Math.round(d.temperature_2m_max[idx]),
-      min: Math.round(d.temperature_2m_min[idx]),
-      rainText: `${d.precipitation_probability_max?.[idx] ?? 0}%`,
-    };
-  });
 }
 
 interface MetEntry {
@@ -222,29 +183,16 @@ async function load() {
   loading.value = true;
   failed.value = false;
 
-  // Primary: Open-Meteo. It can be slow/flaky, so time out and retry a few times.
-  for (let i = 0; i < 3; i++) {
-    try {
-      days.value = await withTimeout(fetchOpenMeteo, 8000);
-      source.value = "open-meteo";
-      stampUpdated();
-      loading.value = false;
-      return;
-    } catch {
-      if (i < 2) await new Promise((r) => setTimeout(r, 1200));
-    }
-  }
-
-  // Fallback: MET Norway (yr.no) – keeps the forecast working if Open-Meteo is down.
-  for (let i = 0; i < 2; i++) {
+  // MET Norway (yr.no) – stable, CORS-enabled. Time out and retry a few times.
+  const attempts = 3;
+  for (let i = 0; i < attempts; i++) {
     try {
       days.value = await withTimeout(fetchMet, 8000);
-      source.value = "met";
       stampUpdated();
       loading.value = false;
       return;
     } catch {
-      if (i < 1) await new Promise((r) => setTimeout(r, 1200));
+      if (i < attempts - 1) await new Promise((r) => setTimeout(r, 1200));
     }
   }
 
@@ -322,10 +270,8 @@ onMounted(load);
       </div>
 
       <p class="mt-4 text-center text-xs text-muted-foreground">
-        Kilde: {{ source === "met" ? "met.no (yr)" : "open-meteo.com"
-        }}<template v-if="source === 'met'"> · nedbør i mm</template> ·
-        oppdateres automatisk<template v-if="updatedAt">
-          · sist oppdatert {{ updatedAt }} (lokal tid Spania)</template
+        Kilde: met.no (yr) · nedbør i mm<template v-if="updatedAt"> · sist
+          oppdatert {{ updatedAt }}</template
         >
       </p>
     </div>
