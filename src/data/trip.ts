@@ -359,7 +359,7 @@ export const players: Player[] = [
     name: 'Andreas Boxill Knutsen',
     hcp: 12.0,
     seed: 'Andreas-BK',
-    funFact: 'Bror nummer to i Boxill-trioen – kjemper en evig kamp mot Joachim og Michael om familiens bragging rights.',
+    funFact: 'Kjemper en evig kamp om bragging rights – og gir seg aldri uten kamp.',
   },
   {
     name: 'Sander Bjørnå',
@@ -383,7 +383,7 @@ export const players: Player[] = [
     name: 'Michael Boxill',
     hcp: 19.0,
     seed: 'Michael-B',
-    funFact: 'Høyest handicap av Boxill-karene, men hevder bestemt at han er den med mest stil.',
+    funFact: 'Høyest handicap i feltet, men hevder bestemt at han er den med mest stil.',
   },
   {
     name: 'Håkon Høiland',
