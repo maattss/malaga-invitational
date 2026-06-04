@@ -30,6 +30,7 @@ interface Day {
 const days = ref<Day[]>([]);
 const loading = ref(true);
 const failed = ref(false);
+const updatedAt = ref("");
 
 const weekdays = ["søn", "man", "tir", "ons", "tor", "fre", "lør"];
 
@@ -70,6 +71,14 @@ onMounted(async () => {
         rain: d.precipitation_probability_max?.[i] ?? 0,
       };
     });
+    updatedAt.value = new Intl.DateTimeFormat("no-NO", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Madrid",
+    }).format(new Date());
   } catch {
     failed.value = true;
   } finally {
@@ -84,7 +93,7 @@ onMounted(async () => {
       <SectionHeading
         eyebrow="Vær"
         title="Værmelding"
-        description="Live varsel for Costa del Sol (Mijas) gjennom uka – planlegg antrekk og soldekk deretter."
+        description="Live varsel for Costa del Sol (Mijas) gjennom uka."
       />
 
       <div v-if="loading" class="flex items-center justify-center py-10 text-muted-foreground">
@@ -128,7 +137,8 @@ onMounted(async () => {
       </div>
 
       <p class="mt-4 text-center text-xs text-muted-foreground">
-        Kilde: open-meteo.com · oppdateres automatisk
+        Kilde: open-meteo.com · oppdateres automatisk<template v-if="updatedAt">
+          · sist oppdatert {{ updatedAt }} (lokal tid Spania)</template>
       </p>
     </div>
   </section>
