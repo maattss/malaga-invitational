@@ -24,13 +24,14 @@ interface Day {
   label: string;
   max: number;
   min: number;
-  rain: number;
+  rainText: string;
 }
 
 const days = ref<Day[]>([]);
 const loading = ref(true);
 const failed = ref(false);
 const updatedAt = ref("");
+const source = ref<"open-meteo" | "met">("open-meteo");
 
 const weekdays = ["søn", "man", "tir", "ons", "tor", "fre", "lør"];
 
@@ -46,64 +47,207 @@ function describe(code: number): { icon: LucideIcon; label: string } {
   return { icon: CloudLightning, label: "Torden" };
 }
 
-async function fetchWeather(signal: AbortSignal) {
+// Map a MET Norway symbol_code (e.g. "partlycloudy_day") to our icon + Norwegian label.
+function describeMet(symbol: string): { icon: LucideIcon; label: string } {
+  const s = (symbol || "").replace(/_(day|night|polartwilight)$/, "");
+  if (s.includes("thunder")) return { icon: CloudLightning, label: "Torden" };
+  if (s.includes("snow")) return { icon: CloudSnow, label: "Snø" };
+  if (s.includes("sleet")) return { icon: CloudSnow, label: "Sludd" };
+  if (s.includes("showers")) return { icon: CloudRain, label: "Regnbyger" };
+  if (s.includes("rain")) return { icon: CloudRain, label: "Regn" };
+  if (s === "fog") return { icon: CloudFog, label: "Tåke" };
+  if (s === "cloudy") return { icon: Cloud, label: "Skyet" };
+  if (s === "partlycloudy") return { icon: CloudSun, label: "Delvis skyet" };
+  if (s === "fair") return { icon: CloudSun, label: "Lettskyet" };
+  if (s === "clearsky") return { icon: Sun, label: "Klart" };
+  return { icon: CloudSun, label: "Lettskyet" };
+}
+
+const madridParts = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Europe/Madrid",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  hour12: false,
+});
+
+function madridDateHour(iso: string): { date: string; hour: number } {
+  const parts = madridParts.formatToParts(new Date(iso));
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
+  return {
+    date: `${get("year")}-${get("month")}-${get("day")}`,
+    hour: parseInt(get("hour"), 10) % 24,
+  };
+}
+
+async function fetchOpenMeteo(signal: AbortSignal): Promise<Day[]> {
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${accommodation.lat}` +
     `&longitude=${accommodation.lon}` +
     `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
     `&timezone=Europe%2FMadrid&forecast_days=8`;
   const res = await fetch(url, { signal });
-  if (!res.ok) throw new Error("weather fetch failed");
-  return res.json();
+  if (!res.ok) throw new Error("open-meteo fetch failed");
+  const data = await res.json();
+  const d = data.daily;
+  return d.time.map((iso: string, idx: number): Day => {
+    const dt = new Date(iso + "T12:00:00");
+    const meta = describe(d.weather_code[idx]);
+    return {
+      date: iso,
+      weekday: weekdays[dt.getDay()],
+      day: dt.getDate(),
+      icon: meta.icon,
+      label: meta.label,
+      max: Math.round(d.temperature_2m_max[idx]),
+      min: Math.round(d.temperature_2m_min[idx]),
+      rainText: `${d.precipitation_probability_max?.[idx] ?? 0}%`,
+    };
+  });
 }
 
-async function withTimeout(ms: number) {
+interface MetEntry {
+  time: string;
+  data: {
+    instant: { details: { air_temperature?: number } };
+    next_1_hours?: {
+      summary?: { symbol_code?: string };
+      details?: { precipitation_amount?: number };
+    };
+    next_6_hours?: {
+      summary?: { symbol_code?: string };
+      details?: { precipitation_amount?: number };
+    };
+  };
+}
+
+async function fetchMet(signal: AbortSignal): Promise<Day[]> {
+  const url =
+    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${accommodation.lat}` +
+    `&lon=${accommodation.lon}`;
+  const res = await fetch(url, { signal });
+  if (!res.ok) throw new Error("met fetch failed");
+  const data = await res.json();
+  const series: MetEntry[] = data?.properties?.timeseries ?? [];
+
+  interface Agg {
+    temps: number[];
+    rain1h: number;
+    rain6h: number;
+    has1h: boolean;
+    middaySymbol?: string;
+    firstSymbol?: string;
+    middayDist: number;
+  }
+  const byDate = new Map<string, Agg>();
+  const order: string[] = [];
+
+  for (const e of series) {
+    const { date, hour } = madridDateHour(e.time);
+    let agg = byDate.get(date);
+    if (!agg) {
+      agg = { temps: [], rain1h: 0, rain6h: 0, has1h: false, middayDist: 99 };
+      byDate.set(date, agg);
+      order.push(date);
+    }
+    const t = e.data.instant.details.air_temperature;
+    if (typeof t === "number") agg.temps.push(t);
+
+    const r1 = e.data.next_1_hours?.details?.precipitation_amount;
+    if (typeof r1 === "number") {
+      agg.rain1h += r1;
+      agg.has1h = true;
+    }
+    const r6 = e.data.next_6_hours?.details?.precipitation_amount;
+    if (typeof r6 === "number") agg.rain6h += r6;
+
+    const sym =
+      e.data.next_1_hours?.summary?.symbol_code ??
+      e.data.next_6_hours?.summary?.symbol_code;
+    if (sym) {
+      if (agg.firstSymbol === undefined) agg.firstSymbol = sym;
+      const dist = Math.abs(hour - 13);
+      if (dist < agg.middayDist) {
+        agg.middayDist = dist;
+        agg.middaySymbol = sym;
+      }
+    }
+  }
+
+  return order.slice(0, 8).map((date): Day => {
+    const agg = byDate.get(date)!;
+    const dt = new Date(date + "T12:00:00");
+    const meta = describeMet(agg.middaySymbol ?? agg.firstSymbol ?? "");
+    const rainMm = agg.has1h ? agg.rain1h : agg.rain6h;
+    return {
+      date,
+      weekday: weekdays[dt.getDay()],
+      day: dt.getDate(),
+      icon: meta.icon,
+      label: meta.label,
+      max: agg.temps.length ? Math.round(Math.max(...agg.temps)) : 0,
+      min: agg.temps.length ? Math.round(Math.min(...agg.temps)) : 0,
+      rainText:
+        rainMm >= 0.05 ? `${rainMm.toFixed(rainMm < 1 ? 1 : 0)} mm` : "0 mm",
+    };
+  });
+}
+
+async function withTimeout(
+  fn: (signal: AbortSignal) => Promise<Day[]>,
+  ms: number,
+): Promise<Day[]> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), ms);
   try {
-    return await fetchWeather(ctrl.signal);
+    return await fn(ctrl.signal);
   } finally {
     clearTimeout(timer);
   }
 }
 
+function stampUpdated() {
+  updatedAt.value = new Intl.DateTimeFormat("no-NO", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(new Date());
+}
+
 async function load() {
   loading.value = true;
   failed.value = false;
-  // The Open-Meteo API can be slow/flaky; time out and retry a couple of times.
-  const attempts = 3;
-  for (let i = 0; i < attempts; i++) {
+
+  // Primary: Open-Meteo. It can be slow/flaky, so time out and retry a few times.
+  for (let i = 0; i < 3; i++) {
     try {
-      const data = await withTimeout(8000);
-      const d = data.daily;
-      days.value = d.time.map((iso: string, idx: number) => {
-        const dt = new Date(iso + "T12:00:00");
-        const meta = describe(d.weather_code[idx]);
-        return {
-          date: iso,
-          weekday: weekdays[dt.getDay()],
-          day: dt.getDate(),
-          icon: meta.icon,
-          label: meta.label,
-          max: Math.round(d.temperature_2m_max[idx]),
-          min: Math.round(d.temperature_2m_min[idx]),
-          rain: d.precipitation_probability_max?.[idx] ?? 0,
-        };
-      });
-      updatedAt.value = new Intl.DateTimeFormat("no-NO", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "Europe/Madrid",
-      }).format(new Date());
+      days.value = await withTimeout(fetchOpenMeteo, 8000);
+      source.value = "open-meteo";
+      stampUpdated();
       loading.value = false;
       return;
     } catch {
-      if (i < attempts - 1) await new Promise((r) => setTimeout(r, 1200));
+      if (i < 2) await new Promise((r) => setTimeout(r, 1200));
     }
   }
+
+  // Fallback: MET Norway (yr.no) – keeps the forecast working if Open-Meteo is down.
+  for (let i = 0; i < 2; i++) {
+    try {
+      days.value = await withTimeout(fetchMet, 8000);
+      source.value = "met";
+      stampUpdated();
+      loading.value = false;
+      return;
+    } catch {
+      if (i < 1) await new Promise((r) => setTimeout(r, 1200));
+    }
+  }
+
   failed.value = true;
   loading.value = false;
 }
@@ -171,14 +315,16 @@ onMounted(load);
             <p
               class="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground tabular-nums"
             >
-              <Droplets class="h-3 w-3" /> {{ d.rain }}%
+              <Droplets class="h-3 w-3" /> {{ d.rainText }}
             </p>
           </CardContent>
         </Card>
       </div>
 
       <p class="mt-4 text-center text-xs text-muted-foreground">
-        Kilde: open-meteo.com · oppdateres automatisk<template v-if="updatedAt">
+        Kilde: {{ source === "met" ? "met.no (yr)" : "open-meteo.com"
+        }}<template v-if="source === 'met'"> · nedbør i mm</template> ·
+        oppdateres automatisk<template v-if="updatedAt">
           · sist oppdatert {{ updatedAt }} (lokal tid Spania)</template
         >
       </p>
