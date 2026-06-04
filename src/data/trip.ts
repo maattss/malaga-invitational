@@ -335,7 +335,7 @@ export const players: Player[] = [
     hcp: 3.0,
     seed: 'Victor-G',
     leader: true,
-    funFact: 'Turens reiseleder og lavest i handicap – sjefen både i bussen og på fairway. Det han sier, gjelder (helt til neste putt).',
+    funFact: 'Lavest handicap i gjengen – mannen alle vil ha på laget i scramble.',
   },
   {
     name: 'Joachim Boxill Knutsen',
@@ -383,7 +383,7 @@ export const players: Player[] = [
     name: 'Michael Boxill',
     hcp: 19.0,
     seed: 'Michael-B',
-    funFact: 'Den tredje Boxill-broren – høyest handicap av de tre, men hevder bestemt at han er den med mest stil.',
+    funFact: 'Høyest handicap av Boxill-karene, men hevder bestemt at han er den med mest stil.',
   },
   {
     name: 'Håkon Høiland',
