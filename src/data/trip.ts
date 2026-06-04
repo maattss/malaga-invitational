@@ -272,10 +272,9 @@ export const liv = {
   },
   facts: [
     'En av verdens mest ikoniske baner – vertskap for Ryder Cup 1997.',
-    'Spanske stjerner i feltet: Jon Rahm, Sergio García og David Puig.',
+    'Store LIV-navn i feltet: Bryson DeChambeau, Jon Rahm, Brooks Koepka, Dustin Johnson og Joaquín Niemann.',
     'Shotgun-start betyr at alle lagene starter samtidig – mye action overalt.',
     'Nytt i år: 72 hull over 4 dager – vi ser runde 3 (lørdag) live.',
-    'Finaledagen er søndag 7. juni (runde 4) – da avgjøres det hele.',
     'Konsert/show på området etter spillet – sjekk dagens artist i LIV-appen.',
   ],
   tips: [
