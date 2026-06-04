@@ -224,10 +224,10 @@ export const schedule: TripDay[] = [
 export const liv = {
   event: 'LIV Golf Andalucía 2026',
   venue: 'Real Club Valderrama, Sotogrande',
-  dates: '5.–7. juni 2026',
-  ourDay: 'Lørdag 6. juni (runde 2)',
+  dates: '4.–7. juni 2026 (tor–søn)',
+  ourDay: 'Lørdag 6. juni (runde 3)',
   purse: '20 mill. USD',
-  format: '54 hull · shotgun-start · 54 spillere, 12 lag · ingen cut',
+  format: '72 hull · 4 runder · shotgun-start · 54 spillere · ingen cut',
   ticket: {
     type: 'Ground Pass Plus',
     summary: 'Vi har kjøpt Ground Pass Plus-billetter til gjengen.',
@@ -242,7 +242,8 @@ export const liv = {
     'En av verdens mest ikoniske baner – vertskap for Ryder Cup 1997.',
     'Spanske stjerner i feltet: Jon Rahm, Sergio García og David Puig.',
     'Shotgun-start betyr at alle lagene starter samtidig – mye action overalt.',
-    'Lørdag er finaledagen (runde 3) – avgjørelsen både individuelt og for lagene.',
+    'Nytt i år: 72 hull over 4 dager – vi ser runde 3 (lørdag) live.',
+    'Finaledagen er søndag 7. juni (runde 4) – da avgjøres det hele.',
     'Konsert/show på området etter spillet – sjekk dagens artist i LIV-appen.',
   ],
   tips: [
