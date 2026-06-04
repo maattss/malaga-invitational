@@ -260,6 +260,7 @@ export const liv = {
   dates: '4.–7. juni 2026 (tor–søn)',
   ourDay: 'Lørdag 6. juni (runde 3)',
   purse: '20 mill. USD',
+  website: 'https://www.livgolf.com/tournaments/andalucia',
   format: '72 hull · 4 runder · shotgun-start · 54 spillere · ingen cut',
   ticket: {
     type: 'Ground Pass Plus',

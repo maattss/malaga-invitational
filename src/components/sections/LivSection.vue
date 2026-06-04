@@ -7,6 +7,7 @@ import {
   Check,
   Lightbulb,
   Ticket,
+  ExternalLink,
 } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -80,6 +81,15 @@ const meta = [
                   <span>{{ inc }}</span>
                 </li>
               </ul>
+              <a
+                :href="liv.website"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
+              >
+                Mer info på livgolf.com
+                <ExternalLink class="h-3.5 w-3.5" />
+              </a>
             </div>
 
             <div class="mt-6 grid gap-6 md:grid-cols-2">

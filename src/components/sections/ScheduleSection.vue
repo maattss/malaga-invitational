@@ -34,7 +34,7 @@ import { schedule } from "@/data/trip";
           (Santana) er foreløpige estimater (merket «est.»). Selve Málaga Invitational
           teller kun for de fem turneringsrundene (markert med
           <Trophy class="inline h-3 w-3 align-[-1px]" /> – fredag, lørdag, søndag og
-          begge på mandag). Øvrige runder er sosiale.
+          begge på mandag).
         </p>
       </div>
 
@@ -121,7 +121,7 @@ import { schedule } from "@/data/trip";
                         r.times.join(" · ")
                       }}</span>
                       <span
-                        v-if="!r.isLiv"
+                        v-if="r.estimate"
                         class="text-xs font-normal text-muted-foreground"
                         >(est.)</span
                       >
