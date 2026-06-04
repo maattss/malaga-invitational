@@ -10,9 +10,10 @@ import {
   ExternalLink,
 } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import SectionHeading from "@/components/SectionHeading.vue";
 import { liv } from "@/data/trip";
+
+const formatParts = liv.format.split(" · ");
 
 const meta = [
   { icon: MapPin, label: "Bane", value: liv.venue },
@@ -38,9 +39,17 @@ const meta = [
               class="fairway-texture pointer-events-none absolute inset-0 opacity-30"
             />
             <div class="relative">
-              <Badge variant="accent">{{ liv.format }}</Badge>
-              <h3 class="mt-3 text-3xl font-extrabold">{{ liv.event }}</h3>
+              <h3 class="text-3xl font-extrabold">{{ liv.event }}</h3>
               <p class="mt-1 text-white/80">{{ liv.venue }}</p>
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                <span
+                  v-for="part in formatParts"
+                  :key="part"
+                  class="rounded-full bg-white/15 px-2.5 py-1 text-xs font-medium text-white ring-1 ring-white/20 backdrop-blur"
+                >
+                  {{ part }}
+                </span>
+              </div>
             </div>
           </div>
 

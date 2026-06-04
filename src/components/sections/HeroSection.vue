@@ -44,13 +44,16 @@ const facts = [
   <section
     id="oversikt"
     class="hero-gradient relative flex min-h-[100svh] items-center overflow-hidden"
-    style="margin-top: calc(-1 * env(safe-area-inset-top)); padding-top: calc(4rem + env(safe-area-inset-top))"
+    style="
+      margin-top: calc(-1 * env(safe-area-inset-top));
+      padding-top: calc(4rem + env(safe-area-inset-top));
+    "
   >
     <div
       class="fairway-texture pointer-events-none absolute inset-0 opacity-30"
     />
     <div
-      class="pointer-events-none absolute -bottom-32 left-1/2 h-72 w-[120%] -translate-x-1/2 rounded-[100%] bg-background/95 blur-2xl"
+      class="pointer-events-none absolute -bottom-48 left-1/2 h-56 w-[120%] -translate-x-1/2 rounded-[100%] bg-background/90 blur-2xl sm:-bottom-32 sm:h-72 sm:bg-background/95"
     />
 
     <div class="container relative z-10 py-16">
@@ -90,7 +93,10 @@ const facts = [
           </Button>
         </div>
 
-        <div class="mx-auto mt-12 grid max-w-md grid-cols-4 gap-2 sm:gap-3" aria-hidden="true">
+        <div
+          class="mx-auto mt-12 grid max-w-md grid-cols-4 gap-2 sm:gap-3"
+          aria-hidden="true"
+        >
           <div
             v-for="u in units"
             :key="u.l"
