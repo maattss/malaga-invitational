@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import PasswordGate from '@/components/PasswordGate.vue'
+import SeasonEndedOverlay from '@/components/SeasonEndedOverlay.vue'
 import SiteNav from '@/components/SiteNav.vue'
 import HeroSection from '@/components/sections/HeroSection.vue'
 import FlightsSection from '@/components/sections/FlightsSection.vue'
@@ -16,6 +17,9 @@ import { inject as injectAnalytics } from '@vercel/analytics'
 
 const unlocked = ref(false)
 
+// Sett til false når neste års program er klart
+const seasonEnded = ref(true)
+
 onMounted(() => {
   injectAnalytics()
   try {
@@ -29,7 +33,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <PasswordGate v-if="!unlocked" @unlocked="unlocked = true" />
+  <SeasonEndedOverlay v-if="seasonEnded" />
+
+  <PasswordGate v-else-if="!unlocked" @unlocked="unlocked = true" />
 
   <template v-else>
     <SiteNav />
