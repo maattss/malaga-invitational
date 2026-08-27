@@ -70,9 +70,7 @@ export const accommodation = {
   lon: -4.662,
   checkIn: 'Torsdag 4. juni (sen kveld etter landing)',
   checkOut: 'Torsdag 11. juni',
-  notes: [
-    'Adresse og innsjekk-detaljer finner du i Airbnb-appen.',
-  ],
+  notes: ['Adresse og innsjekk-detaljer finner du i Airbnb-appen.'],
 }
 
 export const schedule: TripDay[] = [
@@ -349,7 +347,8 @@ export const players: Player[] = [
     name: 'Joachim Boxill Knutsen',
     hcp: 7.7,
     seed: 'Joachim-BK',
-    funFact: 'Én av tre Boxill-brødre på turen – laveste handicap av brødrene og lar dem aldri glemme det.',
+    funFact:
+      'Én av tre Boxill-brødre på turen – laveste handicap av brødrene og lar dem aldri glemme det.',
   },
   {
     name: 'Torbjørn Berge',
@@ -361,13 +360,15 @@ export const players: Player[] = [
     name: 'Joakim Solstrand',
     hcp: 11.4,
     seed: 'Joakim-S',
-    funFact: 'Regjerende rekordholder med 2 napp i vandretrofeet – jakter nappet for evig eierskap.',
+    funFact:
+      'Regjerende rekordholder med 2 napp i vandretrofeet – jakter nappet for evig eierskap.',
   },
   {
     name: 'Andreas Boxill Knutsen',
     hcp: 12.0,
     seed: 'Andreas-BK',
-    funFact: 'Bror nummer to i Boxill-trioen – kjemper en evig kamp mot Joachim og Michael om familiens bragging rights.',
+    funFact:
+      'Bror nummer to i Boxill-trioen – kjemper en evig kamp mot Joachim og Michael om familiens bragging rights.',
   },
   {
     name: 'Sander Bjørnå',
@@ -391,7 +392,8 @@ export const players: Player[] = [
     name: 'Michael Boxill',
     hcp: 19.0,
     seed: 'Michael-B',
-    funFact: 'Den tredje Boxill-broren – høyest handicap av de tre, men hevder bestemt at han er den med mest stil.',
+    funFact:
+      'Den tredje Boxill-broren – høyest handicap av de tre, men hevder bestemt at han er den med mest stil.',
   },
   {
     name: 'Håkon Høiland',
@@ -403,7 +405,8 @@ export const players: Player[] = [
     name: 'Mats Tyldum',
     hcp: 23.3,
     seed: 'Mats-T',
-    funFact: 'Turens webmaster – laget hele denne siden mellom rundene (og bruker det som unnskyldning for hver bogey).',
+    funFact:
+      'Turens webmaster – laget hele denne siden mellom rundene (og bruker det som unnskyldning for hver bogey).',
   },
   {
     name: 'Jørgen Håstø Borgenvik',

@@ -1,63 +1,63 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
-import { Flag, Menu, X } from "lucide-vue-next";
+import { ref, onMounted, onUnmounted } from 'vue'
+import { Flag, Menu, X } from 'lucide-vue-next'
 
 const links = [
-  { href: "#oversikt", label: "Oversikt" },
-  { href: "#fly", label: "Fly" },
-  { href: "#bo", label: "Bo" },
-  { href: "#vaer", label: "Vær" },
-  { href: "#program", label: "Program" },
-  { href: "#liv", label: "LIV Golf" },
-  { href: "#turnering", label: "Turnering" },
-  { href: "#spillere", label: "Spillere" },
-];
+  { href: '#oversikt', label: 'Oversikt' },
+  { href: '#fly', label: 'Fly' },
+  { href: '#bo', label: 'Bo' },
+  { href: '#vaer', label: 'Vær' },
+  { href: '#program', label: 'Program' },
+  { href: '#liv', label: 'LIV Golf' },
+  { href: '#turnering', label: 'Turnering' },
+  { href: '#spillere', label: 'Spillere' },
+]
 
-const scrolled = ref(false);
-const open = ref(false);
-const active = ref("oversikt");
+const scrolled = ref(false)
+const open = ref(false)
+const active = ref('oversikt')
 
-const ids = links.map((l) => l.href.slice(1));
-let observer: IntersectionObserver | undefined;
+const ids = links.map((l) => l.href.slice(1))
+let observer: IntersectionObserver | undefined
 
 // The observer callback only reports sections whose intersection *changed*, so we
 // keep the latest ratio for every section and pick the winner across all of them.
-const ratios = new Map<string, number>();
+const ratios = new Map<string, number>()
 
 function onScroll() {
-  scrolled.value = window.scrollY > 20;
+  scrolled.value = window.scrollY > 20
 }
 onMounted(() => {
-  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true })
   observer = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
-        ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+        ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0)
       }
-      let best = "";
-      let bestRatio = 0;
+      let best = ''
+      let bestRatio = 0
       for (const [id, ratio] of ratios) {
         if (ratio > bestRatio) {
-          best = id;
-          bestRatio = ratio;
+          best = id
+          bestRatio = ratio
         }
       }
-      if (best) active.value = best;
+      if (best) active.value = best
     },
-    { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
-  );
+    { rootMargin: '-45% 0px -50% 0px', threshold: [0, 0.25, 0.5, 1] },
+  )
   ids.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) observer!.observe(el);
-  });
-});
+    const el = document.getElementById(id)
+    if (el) observer!.observe(el)
+  })
+})
 onUnmounted(() => {
-  window.removeEventListener("scroll", onScroll);
-  observer?.disconnect();
-});
+  window.removeEventListener('scroll', onScroll)
+  observer?.disconnect()
+})
 
 function go() {
-  open.value = false;
+  open.value = false
 }
 </script>
 
@@ -124,11 +124,7 @@ function go() {
             :key="l.href"
             :href="l.href"
             class="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-white/10"
-            :class="
-              active === l.href.slice(1)
-                ? 'bg-white/15 text-white'
-                : 'text-white/90'
-            "
+            :class="active === l.href.slice(1) ? 'bg-white/15 text-white' : 'text-white/90'"
             @click="go"
           >
             {{ l.label }}

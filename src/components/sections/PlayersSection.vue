@@ -1,48 +1,45 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Users, Sparkles, Star } from "lucide-vue-next";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import SectionHeading from "@/components/SectionHeading.vue";
-import { players } from "@/data/trip";
+import { ref } from 'vue'
+import { Users, Sparkles, Star } from 'lucide-vue-next'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import SectionHeading from '@/components/SectionHeading.vue'
+import { players } from '@/data/trip'
 
 function initials(name: string) {
   return name
-    .split(" ")
+    .split(' ')
     .map((p) => p[0])
     .slice(0, 2)
-    .join("")
-    .toUpperCase();
+    .join('')
+    .toUpperCase()
 }
 
 function avatar(seed: string) {
   return `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(
     seed,
-  )}&backgroundColor=c0e8d5,b6e3c5,d1f0e0&radius=50`;
+  )}&backgroundColor=c0e8d5,b6e3c5,d1f0e0&radius=50`
 }
 
-const photoModules = import.meta.glob(
-  "@/assets/players/*.{jpg,jpeg,png,webp}",
-  {
-    eager: true,
-    import: "default",
-  },
-) as Record<string, string>;
+const photoModules = import.meta.glob('@/assets/players/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>
 
 function photo(seed: string): string | undefined {
   const entry = Object.entries(photoModules).find(
     ([path]) =>
       path
-        .split("/")
+        .split('/')
         .pop()
-        ?.replace(/\.[^.]+$/, "") === seed,
-  );
-  return entry?.[1];
+        ?.replace(/\.[^.]+$/, '') === seed,
+  )
+  return entry?.[1]
 }
 
-const photoFailed = ref<Record<string, boolean>>({});
-const avatarFailed = ref<Record<string, boolean>>({});
-const imgLoaded = ref<Record<string, boolean>>({});
+const photoFailed = ref<Record<string, boolean>>({})
+const avatarFailed = ref<Record<string, boolean>>({})
+const imgLoaded = ref<Record<string, boolean>>({})
 </script>
 
 <template>
@@ -54,9 +51,7 @@ const imgLoaded = ref<Record<string, boolean>>({});
         description="12 spillere kjemper om heder, ære og vandretrofeet – sortert etter handicap."
       />
 
-      <div
-        class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-      >
+      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card
           v-for="(p, i) in players"
           :key="p.name"
@@ -108,9 +103,7 @@ const imgLoaded = ref<Record<string, boolean>>({});
               </Badge>
             </div>
 
-            <div
-              class="mt-4 flex items-start gap-2 rounded-xl bg-secondary/60 p-3 text-sm"
-            >
+            <div class="mt-4 flex items-start gap-2 rounded-xl bg-secondary/60 p-3 text-sm">
               <Sparkles class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
               <span class="text-muted-foreground">{{ p.funFact }}</span>
             </div>
@@ -122,8 +115,7 @@ const imgLoaded = ref<Record<string, boolean>>({});
         class="mx-auto mt-6 flex max-w-4xl items-center justify-center gap-2 text-center text-sm text-muted-foreground"
       >
         <Users class="h-4 w-4" />
-        Spilles med 75 % av handicap. Startlister og puljer settes i Golf
-        Gamebook før hver runde.
+        Spilles med 75 % av handicap. Startlister og puljer settes i Golf Gamebook før hver runde.
       </p>
     </div>
   </section>
