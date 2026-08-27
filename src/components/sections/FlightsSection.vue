@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { PlaneTakeoff, PlaneLanding } from "lucide-vue-next";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import SectionHeading from "@/components/SectionHeading.vue";
-import { flights } from "@/data/trip";
+import { PlaneTakeoff, PlaneLanding } from 'lucide-vue-next'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import SectionHeading from '@/components/SectionHeading.vue'
+import { flights } from '@/data/trip'
 
 const items = [
-  { ...flights.out, icon: PlaneTakeoff, variant: "accent" as const },
-  { ...flights.homeEarly, icon: PlaneLanding, variant: "secondary" as const },
-  { ...flights.homeLate, icon: PlaneLanding, variant: "default" as const },
-];
+  { ...flights.out, icon: PlaneTakeoff, variant: 'accent' as const },
+  { ...flights.homeEarly, icon: PlaneLanding, variant: 'secondary' as const },
+  { ...flights.homeLate, icon: PlaneLanding, variant: 'default' as const },
+]
 </script>
 
 <template>
@@ -36,9 +36,7 @@ const items = [
               </span>
               <Badge :variant="f.variant">{{ f.time }}</Badge>
             </div>
-            <h3
-              class="mt-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground"
-            >
+            <h3 class="mt-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {{ f.label }}
             </h3>
             <p class="mt-1 text-lg font-bold">{{ f.route }}</p>

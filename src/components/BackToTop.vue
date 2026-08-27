@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
-import { ArrowUp } from "lucide-vue-next";
+import { ref, onMounted, onUnmounted } from 'vue'
+import { ArrowUp } from 'lucide-vue-next'
 
-const visible = ref(false);
+const visible = ref(false)
 
 function onScroll() {
-  visible.value = window.scrollY > 600;
+  visible.value = window.scrollY > 600
 }
 function toTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
 }
-onMounted(() => window.addEventListener("scroll", onScroll, { passive: true }));
-onUnmounted(() => window.removeEventListener("scroll", onScroll));
+onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>

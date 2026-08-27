@@ -8,19 +8,19 @@ import {
   Lightbulb,
   Ticket,
   ExternalLink,
-} from "lucide-vue-next";
-import { Card, CardContent } from "@/components/ui/card";
-import SectionHeading from "@/components/SectionHeading.vue";
-import { liv } from "@/data/trip";
+} from 'lucide-vue-next'
+import { Card, CardContent } from '@/components/ui/card'
+import SectionHeading from '@/components/SectionHeading.vue'
+import { liv } from '@/data/trip'
 
-const formatParts = liv.format.split(" · ");
+const formatParts = liv.format.split(' · ')
 
 const meta = [
-  { icon: MapPin, label: "Bane", value: liv.venue },
-  { icon: CalendarDays, label: "Turnering", value: liv.dates },
-  { icon: Trophy, label: "Vi går", value: liv.ourDay },
-  { icon: Banknote, label: "Premiepott", value: liv.purse },
-];
+  { icon: MapPin, label: 'Bane', value: liv.venue },
+  { icon: CalendarDays, label: 'Turnering', value: liv.dates },
+  { icon: Trophy, label: 'Vi går', value: liv.ourDay },
+  { icon: Banknote, label: 'Premiepott', value: liv.purse },
+]
 </script>
 
 <template>
@@ -33,11 +33,9 @@ const meta = [
       />
 
       <div class="mx-auto max-w-4xl">
-        <Card class="overflow-hidden" v-reveal>
+        <Card v-reveal class="overflow-hidden">
           <div class="hero-gradient relative p-8 text-white">
-            <div
-              class="fairway-texture pointer-events-none absolute inset-0 opacity-30"
-            />
+            <div class="fairway-texture pointer-events-none absolute inset-0 opacity-30" />
             <div class="relative">
               <h3 class="text-3xl font-extrabold">{{ liv.event }}</h3>
               <p class="mt-1 text-white/80">{{ liv.venue }}</p>
@@ -55,24 +53,16 @@ const meta = [
 
           <CardContent class="p-6">
             <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              <div
-                v-for="m in meta"
-                :key="m.label"
-                class="rounded-xl bg-secondary/60 p-4"
-              >
+              <div v-for="m in meta" :key="m.label" class="rounded-xl bg-secondary/60 p-4">
                 <component :is="m.icon" class="h-5 w-5 text-primary" />
-                <p
-                  class="mt-2 text-xs uppercase tracking-wide text-muted-foreground"
-                >
+                <p class="mt-2 text-xs uppercase tracking-wide text-muted-foreground">
                   {{ m.label }}
                 </p>
                 <p class="font-semibold leading-tight">{{ m.value }}</p>
               </div>
             </div>
 
-            <div
-              class="mt-6 rounded-xl border border-accent/40 bg-accent/10 p-5"
-            >
+            <div class="mt-6 rounded-xl border border-accent/40 bg-accent/10 p-5">
               <div class="flex items-center gap-2">
                 <Ticket class="h-5 w-5 text-accent" />
                 <h4 class="font-bold">Billetter – {{ liv.ticket.type }}</h4>
@@ -105,11 +95,7 @@ const meta = [
               <div>
                 <h4 class="mb-3 font-semibold">Verdt å vite</h4>
                 <ul class="space-y-2.5">
-                  <li
-                    v-for="(f, i) in liv.facts"
-                    :key="i"
-                    class="flex items-start gap-3 text-sm"
-                  >
+                  <li v-for="(f, i) in liv.facts" :key="i" class="flex items-start gap-3 text-sm">
                     <Check class="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
                     <span>{{ f }}</span>
                   </li>
@@ -118,11 +104,7 @@ const meta = [
               <div>
                 <h4 class="mb-3 font-semibold">Praktiske tips</h4>
                 <ul class="space-y-2.5">
-                  <li
-                    v-for="(t, i) in liv.tips"
-                    :key="i"
-                    class="flex items-start gap-3 text-sm"
-                  >
+                  <li v-for="(t, i) in liv.tips" :key="i" class="flex items-start gap-3 text-sm">
                     <Lightbulb class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                     <span>{{ t }}</span>
                   </li>

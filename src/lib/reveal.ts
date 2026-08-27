@@ -1,10 +1,13 @@
-import type { Directive } from "vue";
+import type { Directive } from 'vue'
 
-const prefersReducedMotion =
-  typeof window !== "undefined" &&
-  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  )
+}
 
-let observer: IntersectionObserver | null = null;
+let observer: IntersectionObserver | null = null
 
 function getObserver(): IntersectionObserver {
   if (!observer) {
@@ -12,27 +15,27 @@ function getObserver(): IntersectionObserver {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("reveal-in");
-            observer!.unobserve(entry.target);
+            entry.target.classList.add('reveal-in')
+            observer!.unobserve(entry.target)
           }
         }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
-    );
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    )
   }
-  return observer;
+  return observer
 }
 
 export const vReveal: Directive<HTMLElement, number | undefined> = {
   mounted(el, binding) {
-    if (prefersReducedMotion) return;
-    el.classList.add("reveal");
+    if (prefersReducedMotion()) return
+    el.classList.add('reveal')
     if (binding.value) {
-      el.style.transitionDelay = `${binding.value}ms`;
+      el.style.transitionDelay = `${binding.value}ms`
     }
-    getObserver().observe(el);
+    getObserver().observe(el)
   },
   unmounted(el) {
-    observer?.unobserve(el);
+    observer?.unobserve(el)
   },
-};
+}

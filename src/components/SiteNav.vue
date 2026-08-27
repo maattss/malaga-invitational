@@ -1,51 +1,64 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
-import { Flag, Menu, X } from "lucide-vue-next";
+import { ref, onMounted, onUnmounted } from 'vue'
+import { Flag, Menu, X } from 'lucide-vue-next'
 
 const links = [
-  { href: "#oversikt", label: "Oversikt" },
-  { href: "#fly", label: "Fly" },
-  { href: "#bo", label: "Bo" },
-  { href: "#vaer", label: "Vær" },
-  { href: "#program", label: "Program" },
-  { href: "#liv", label: "LIV Golf" },
-  { href: "#turnering", label: "Turnering" },
-  { href: "#spillere", label: "Spillere" },
-];
+  { href: '#oversikt', label: 'Oversikt' },
+  { href: '#fly', label: 'Fly' },
+  { href: '#bo', label: 'Bo' },
+  { href: '#vaer', label: 'Vær' },
+  { href: '#program', label: 'Program' },
+  { href: '#liv', label: 'LIV Golf' },
+  { href: '#turnering', label: 'Turnering' },
+  { href: '#spillere', label: 'Spillere' },
+]
 
-const scrolled = ref(false);
-const open = ref(false);
-const active = ref("oversikt");
+const scrolled = ref(false)
+const open = ref(false)
+const active = ref('oversikt')
 
-const ids = links.map((l) => l.href.slice(1));
-let observer: IntersectionObserver | undefined;
+const ids = links.map((l) => l.href.slice(1))
+
+// Scroll-spy: the section currently crossing an imaginary line 40% down the
+// viewport wins. An IntersectionObserver is the tempting tool here, but the
+// sections differ in height by an order of magnitude (the hero is one screen,
+// the programme is four), so intersectionRatio is not comparable between them.
+const SPY_LINE = 0.4
+
+function updateActive() {
+  const line = window.innerHeight * SPY_LINE
+  // At the very bottom the last section may never reach the line, so pin to it.
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+  if (atBottom) {
+    active.value = ids[ids.length - 1]
+    return
+  }
+  let current = ids[0]
+  for (const id of ids) {
+    const el = document.getElementById(id)
+    if (el && el.getBoundingClientRect().top <= line) current = id
+  }
+  active.value = current
+}
 
 function onScroll() {
-  scrolled.value = window.scrollY > 20;
+  scrolled.value = window.scrollY > 20
+  // Eight rect reads, no writes — cheap enough to skip rAF throttling, which
+  // would otherwise stall the highlight while the tab is backgrounded.
+  updateActive()
 }
 onMounted(() => {
-  window.addEventListener("scroll", onScroll, { passive: true });
-  observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((e) => e.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) active.value = visible.target.id;
-    },
-    { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
-  );
-  ids.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) observer!.observe(el);
-  });
-});
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onScroll, { passive: true })
+  updateActive()
+})
 onUnmounted(() => {
-  window.removeEventListener("scroll", onScroll);
-  observer?.disconnect();
-});
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', onScroll)
+})
 
 function go() {
-  open.value = false;
+  open.value = false
 }
 </script>
 
@@ -86,6 +99,8 @@ function go() {
       <button
         class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-white hover:bg-white/10 md:hidden"
         :aria-label="open ? 'Lukk meny' : 'Åpne meny'"
+        :aria-expanded="open"
+        aria-controls="mi-mobile-nav"
         @click="open = !open"
       >
         <X v-if="open" class="h-6 w-6" />
@@ -101,6 +116,7 @@ function go() {
     >
       <nav
         v-if="open"
+        id="mi-mobile-nav"
         class="border-t border-white/10 bg-[hsl(154_53%_13%)] md:hidden"
       >
         <div class="container grid gap-1 py-3">
@@ -109,11 +125,7 @@ function go() {
             :key="l.href"
             :href="l.href"
             class="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-white/10"
-            :class="
-              active === l.href.slice(1)
-                ? 'bg-white/15 text-white'
-                : 'text-white/90'
-            "
+            :class="active === l.href.slice(1) ? 'bg-white/15 text-white' : 'text-white/90'"
             @click="go"
           >
             {{ l.label }}

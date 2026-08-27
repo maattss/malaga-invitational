@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { LogIn, LogOut, ExternalLink, Check, MapPin } from "lucide-vue-next";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import SectionHeading from "@/components/SectionHeading.vue";
-import { accommodation } from "@/data/trip";
+import { ref } from 'vue'
+import { LogIn, LogOut, ExternalLink, Check, MapPin } from 'lucide-vue-next'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import SectionHeading from '@/components/SectionHeading.vue'
+import { accommodation } from '@/data/trip'
 
-const heroLoaded = ref(false);
+const heroLoaded = ref(false)
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const heroLoaded = ref(false);
         description="Hele gjengen bor samlet i felles villa på Costa del Sol."
       />
 
-      <Card class="mx-auto max-w-3xl overflow-hidden" v-reveal>
+      <Card v-reveal class="mx-auto max-w-3xl overflow-hidden">
         <div class="relative">
           <img
             :src="accommodation.image"
@@ -31,13 +31,9 @@ const heroLoaded = ref(false);
           <div
             class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
           />
-          <div
-            class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6"
-          >
+          <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
             <div class="min-w-0 text-white">
-              <span
-                class="inline-flex items-center gap-1.5 text-xs font-medium text-white/80"
-              >
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-white/80">
                 <MapPin class="h-3.5 w-3.5" />
                 {{ accommodation.location }}
               </span>
@@ -57,22 +53,14 @@ const heroLoaded = ref(false);
             <div class="flex items-center gap-3 rounded-xl bg-secondary/60 p-4">
               <LogIn class="h-5 w-5 text-primary" />
               <div>
-                <p
-                  class="text-xs uppercase tracking-wide text-muted-foreground"
-                >
-                  Innsjekk
-                </p>
+                <p class="text-xs uppercase tracking-wide text-muted-foreground">Innsjekk</p>
                 <p class="font-semibold">{{ accommodation.checkIn }}</p>
               </div>
             </div>
             <div class="flex items-center gap-3 rounded-xl bg-secondary/60 p-4">
               <LogOut class="h-5 w-5 text-primary" />
               <div>
-                <p
-                  class="text-xs uppercase tracking-wide text-muted-foreground"
-                >
-                  Utsjekk
-                </p>
+                <p class="text-xs uppercase tracking-wide text-muted-foreground">Utsjekk</p>
                 <p class="font-semibold">{{ accommodation.checkOut }}</p>
               </div>
             </div>

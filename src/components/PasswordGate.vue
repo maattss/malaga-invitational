@@ -1,44 +1,40 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from "vue";
-import { Lock, Flag } from "lucide-vue-next";
-import { Button } from "@/components/ui/button";
+import { ref, nextTick, onMounted } from 'vue'
+import { Lock, Flag } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
 
-const PASSWORD = "2026";
-const STORAGE_KEY = "mi26-unlocked";
+const PASSWORD = '2026'
+const STORAGE_KEY = 'mi26-unlocked'
 
-const emit = defineEmits<{ unlocked: [] }>();
+const emit = defineEmits<{ unlocked: [] }>()
 
-const value = ref("");
-const error = ref(false);
-const inputEl = ref<HTMLInputElement | null>(null);
+const value = ref('')
+const error = ref(false)
+const inputEl = ref<HTMLInputElement | null>(null)
 
 onMounted(() => {
-  nextTick(() => inputEl.value?.focus());
-});
+  nextTick(() => inputEl.value?.focus())
+})
 
 function submit() {
   if (value.value.trim() === PASSWORD) {
     try {
-      localStorage.setItem(STORAGE_KEY, "true");
+      localStorage.setItem(STORAGE_KEY, 'true')
     } catch {
       /* ignore */
     }
-    emit("unlocked");
+    emit('unlocked')
   } else {
-    error.value = true;
-    value.value = "";
-    nextTick(() => inputEl.value?.focus());
+    error.value = true
+    value.value = ''
+    nextTick(() => inputEl.value?.focus())
   }
 }
 </script>
 
 <template>
-  <div
-    class="hero-gradient fixed inset-0 z-50 flex items-center justify-center p-6"
-  >
-    <div
-      class="fairway-texture pointer-events-none absolute inset-0 opacity-40"
-    />
+  <div class="hero-gradient fixed inset-0 z-50 flex items-center justify-center p-6">
+    <div class="fairway-texture pointer-events-none absolute inset-0 opacity-40" />
     <div
       class="animate-fade-in relative w-full max-w-sm rounded-2xl border border-white/15 bg-white/10 p-8 text-center shadow-2xl backdrop-blur-xl"
     >
@@ -47,12 +43,8 @@ function submit() {
       >
         <Flag class="h-8 w-8" />
       </div>
-      <h1 class="text-2xl font-extrabold tracking-tight text-white">
-        Málaga Invitational
-      </h1>
-      <p class="mt-1 text-sm text-white/70">
-        Skriv inn passordet for å komme inn
-      </p>
+      <h1 class="text-2xl font-extrabold tracking-tight text-white">Málaga Invitational</h1>
+      <p class="mt-1 text-sm text-white/70">Skriv inn passordet for å komme inn</p>
 
       <form class="mt-6 space-y-3" @submit.prevent="submit">
         <div class="relative">
@@ -73,12 +65,8 @@ function submit() {
             @input="error = false"
           />
         </div>
-        <p v-if="error" class="text-sm font-medium text-red-300">
-          Feil passord – prøv igjen.
-        </p>
-        <Button type="submit" variant="accent" size="lg" class="w-full">
-          Lås opp
-        </Button>
+        <p v-if="error" class="text-sm font-medium text-red-300">Feil passord – prøv igjen.</p>
+        <Button type="submit" variant="accent" size="lg" class="w-full"> Lås opp </Button>
       </form>
     </div>
   </div>
