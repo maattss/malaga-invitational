@@ -18,42 +18,43 @@ const open = ref(false)
 const active = ref('oversikt')
 
 const ids = links.map((l) => l.href.slice(1))
-let observer: IntersectionObserver | undefined
 
-// The observer callback only reports sections whose intersection *changed*, so we
-// keep the latest ratio for every section and pick the winner across all of them.
-const ratios = new Map<string, number>()
+// Scroll-spy: the section currently crossing an imaginary line 40% down the
+// viewport wins. An IntersectionObserver is the tempting tool here, but the
+// sections differ in height by an order of magnitude (the hero is one screen,
+// the programme is four), so intersectionRatio is not comparable between them.
+const SPY_LINE = 0.4
+
+function updateActive() {
+  const line = window.innerHeight * SPY_LINE
+  // At the very bottom the last section may never reach the line, so pin to it.
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+  if (atBottom) {
+    active.value = ids[ids.length - 1]
+    return
+  }
+  let current = ids[0]
+  for (const id of ids) {
+    const el = document.getElementById(id)
+    if (el && el.getBoundingClientRect().top <= line) current = id
+  }
+  active.value = current
+}
 
 function onScroll() {
   scrolled.value = window.scrollY > 20
+  // Eight rect reads, no writes — cheap enough to skip rAF throttling, which
+  // would otherwise stall the highlight while the tab is backgrounded.
+  updateActive()
 }
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
-  observer = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0)
-      }
-      let best = ''
-      let bestRatio = 0
-      for (const [id, ratio] of ratios) {
-        if (ratio > bestRatio) {
-          best = id
-          bestRatio = ratio
-        }
-      }
-      if (best) active.value = best
-    },
-    { rootMargin: '-45% 0px -50% 0px', threshold: [0, 0.25, 0.5, 1] },
-  )
-  ids.forEach((id) => {
-    const el = document.getElementById(id)
-    if (el) observer!.observe(el)
-  })
+  window.addEventListener('resize', onScroll, { passive: true })
+  updateActive()
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
-  observer?.disconnect()
+  window.removeEventListener('resize', onScroll)
 })
 
 function go() {
