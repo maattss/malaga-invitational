@@ -20,6 +20,10 @@ const active = ref("oversikt");
 const ids = links.map((l) => l.href.slice(1));
 let observer: IntersectionObserver | undefined;
 
+// The observer callback only reports sections whose intersection *changed*, so we
+// keep the latest ratio for every section and pick the winner across all of them.
+const ratios = new Map<string, number>();
+
 function onScroll() {
   scrolled.value = window.scrollY > 20;
 }
@@ -27,10 +31,18 @@ onMounted(() => {
   window.addEventListener("scroll", onScroll, { passive: true });
   observer = new IntersectionObserver(
     (entries) => {
-      const visible = entries
-        .filter((e) => e.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) active.value = visible.target.id;
+      for (const e of entries) {
+        ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+      }
+      let best = "";
+      let bestRatio = 0;
+      for (const [id, ratio] of ratios) {
+        if (ratio > bestRatio) {
+          best = id;
+          bestRatio = ratio;
+        }
+      }
+      if (best) active.value = best;
     },
     { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
   );
@@ -86,6 +98,8 @@ function go() {
       <button
         class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-white hover:bg-white/10 md:hidden"
         :aria-label="open ? 'Lukk meny' : 'Åpne meny'"
+        :aria-expanded="open"
+        aria-controls="mi-mobile-nav"
         @click="open = !open"
       >
         <X v-if="open" class="h-6 w-6" />
@@ -101,6 +115,7 @@ function go() {
     >
       <nav
         v-if="open"
+        id="mi-mobile-nav"
         class="border-t border-white/10 bg-[hsl(154_53%_13%)] md:hidden"
       >
         <div class="container grid gap-1 py-3">

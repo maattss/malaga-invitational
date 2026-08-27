@@ -50,8 +50,6 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        "accordion-down": { from: { height: "0" }, to: { height: "var(--reka-accordion-content-height)" } },
-        "accordion-up": { from: { height: "var(--reka-accordion-content-height)" }, to: { height: "0" } },
         "fade-in": { from: { opacity: "0", transform: "translateY(8px)" }, to: { opacity: "1", transform: "translateY(0)" } },
       },
       animation: {
@@ -59,5 +57,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 }

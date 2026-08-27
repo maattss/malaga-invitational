@@ -1,8 +1,11 @@
 import type { Directive } from "vue";
 
-const prefersReducedMotion =
-  typeof window !== "undefined" &&
-  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+  );
+}
 
 let observer: IntersectionObserver | null = null;
 
@@ -25,7 +28,7 @@ function getObserver(): IntersectionObserver {
 
 export const vReveal: Directive<HTMLElement, number | undefined> = {
   mounted(el, binding) {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
     el.classList.add("reveal");
     if (binding.value) {
       el.style.transitionDelay = `${binding.value}ms`;

@@ -1,4 +1,4 @@
-const CACHE = "mi-2026-v1";
+const CACHE = "mi-2026-v2";
 const CORE = [
   "/",
   "/index.html",
@@ -8,7 +8,6 @@ const CORE = [
   "/icon-512.png",
   "/flag.svg",
   "/airbnb.jpg",
-  "/Malaga-Invitational-2026.pdf",
 ];
 
 self.addEventListener("install", (event) => {

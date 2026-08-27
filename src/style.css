@@ -28,10 +28,15 @@
   * { border-color: hsl(var(--border)); }
 
   html {
-    scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     /* Fills the iOS safe-area / notch behind the green hero + footer */
     background-color: hsl(154 53% 16%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {

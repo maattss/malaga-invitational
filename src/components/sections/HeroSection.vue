@@ -32,6 +32,12 @@ const units = computed(() => [
   { v: countdown.value.s, l: "sek" },
 ]);
 
+const countdownText = computed(() => {
+  const { d, h, m, started } = countdown.value;
+  if (started) return "Turen er i gang – nyt Spania!";
+  return `${d} dager, ${h} timer og ${m} minutter til avreise fra Stavanger.`;
+});
+
 const facts = [
   { icon: CalendarDays, label: "4.–11. juni 2026" },
   { icon: MapPin, label: "Costa del Sol" },
@@ -112,7 +118,8 @@ const facts = [
             </div>
           </div>
         </div>
-        <p class="mt-3 text-xs text-white/70">
+        <p class="sr-only">{{ countdownText }}</p>
+        <p class="mt-3 text-xs text-white/70" aria-hidden="true">
           {{
             countdown.started
               ? "Turen er i gang – nyt Spania! 🇪🇸"

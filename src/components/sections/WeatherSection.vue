@@ -100,6 +100,8 @@ async function fetchMet(signal: AbortSignal): Promise<Day[]> {
     middaySymbol?: string;
     firstSymbol?: string;
     middayDist: number;
+    minHour: number;
+    maxHour: number;
   }
   const byDate = new Map<string, Agg>();
   const order: string[] = [];
@@ -108,10 +110,20 @@ async function fetchMet(signal: AbortSignal): Promise<Day[]> {
     const { date, hour } = madridDateHour(e.time);
     let agg = byDate.get(date);
     if (!agg) {
-      agg = { temps: [], rain1h: 0, rain6h: 0, has1h: false, middayDist: 99 };
+      agg = {
+        temps: [],
+        rain1h: 0,
+        rain6h: 0,
+        has1h: false,
+        middayDist: 99,
+        minHour: 24,
+        maxHour: -1,
+      };
       byDate.set(date, agg);
       order.push(date);
     }
+    if (hour < agg.minHour) agg.minHour = hour;
+    if (hour > agg.maxHour) agg.maxHour = hour;
     const t = e.data.instant.details.air_temperature;
     if (typeof t === "number") agg.temps.push(t);
 
@@ -136,7 +148,15 @@ async function fetchMet(signal: AbortSignal): Promise<Day[]> {
     }
   }
 
-  return order.slice(0, 8).map((date): Day => {
+  // The first and last buckets of the series are partial days: a page load at 18:00
+  // would otherwise show an evening-only "max". Keep only days we have covered from
+  // morning to late afternoon.
+  const fullDays = order.filter((date) => {
+    const agg = byDate.get(date)!;
+    return agg.minHour <= 9 && agg.maxHour >= 16;
+  });
+
+  return fullDays.slice(0, 8).map((date): Day => {
     const agg = byDate.get(date)!;
     const dt = new Date(date + "T12:00:00");
     const meta = describeMet(agg.middaySymbol ?? agg.firstSymbol ?? "");

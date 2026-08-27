@@ -32,7 +32,7 @@ function mapsUrl(course: string) {
       />
 
       <div
-        class="mx-auto mb-8 flex max-w-3xl items-start gap-2.5 rounded-xl border border-amber-300/60 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
+        class="mx-auto mb-8 flex max-w-3xl items-start gap-2.5 rounded-xl border border-amber-300/60 bg-amber-50 p-4 text-sm text-amber-900"
       >
         <Info class="mt-0.5 h-4 w-4 shrink-0" />
         <p>
@@ -100,8 +100,8 @@ function mapsUrl(course: string) {
               <!-- Rounds -->
               <div v-if="day.rounds.length" class="mt-4 space-y-3">
                 <div
-                  v-for="(r, i) in day.rounds"
-                  :key="i"
+                  v-for="(r, ri) in day.rounds"
+                  :key="ri"
                   class="rounded-xl border border-border p-3 sm:p-3.5"
                   :class="
                     r.isLiv
